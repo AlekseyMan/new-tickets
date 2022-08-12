@@ -2,84 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SchoolRequest;
+use App\Models\Profile;
 use App\Models\School;
-use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class SchoolController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(): View
     {
-        //
+        return view('pages.school.index', ['schools' => School::all()]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): View
     {
-        //
+        return view('pages.school.create', ['coaches' => Profile::where('profile_role', Profile::ROLE_COACH)->get()]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(SchoolRequest $request, School $school)
     {
-        //
+        $data = $request->validated();
+        $data['contacts'] = json_encode($data['contacts']);
+        $school->create($data);
+        return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\School  $school
-     * @return \Illuminate\Http\Response
-     */
-    public function show(School $school)
+    public function show(School $school): View
     {
-        //
+        return view('pages.school.show', ['school' => $school]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\School  $school
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(School $school)
+    public function edit(School $school): View
     {
-        //
+        return view('pages.school.edit', ['school' => $school]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\School  $school
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, School $school)
+    public function update(SchoolRequest $request, School $school)
     {
-        //
+        $school->update($request->validated());
+        return redirect()->route('school.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\School  $school
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(School $school)
     {
-        //
+        $school->delete();
+        return back();
     }
 }

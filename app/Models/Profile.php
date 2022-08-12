@@ -36,20 +36,8 @@ class Profile extends Model
         return $this->hasOne('balances', 'profile_id', 'id');
     }
 
-    public function getKaratekiesAttribute()
+    public function getFullNameAttribute(): string
     {
-        return $this->where('profile_role', self::ROLE_KARATEKA)->get();
+        return $this->surname . " " . $this->name . " " . $this->patronymic;
     }
-
-    public function getParentsAttribute()
-    {
-        return $this->where('profile_role', self::ROLE_PARENT)->get();
-    }
-
-    public function getCoachesAttribute()
-    {
-        return $this->where('profile_role', self::ROLE_COACH)->get();
-    }
-
-
 }

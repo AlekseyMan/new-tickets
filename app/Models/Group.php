@@ -28,4 +28,9 @@ class Group extends Model
     {
         return $this->hasMany('groups_profiles')->where('role', Profile::ROLE_KARATEKA);
     }
+
+    public function getScheduleAttribute()
+    {
+        return $this->times ?? "schedule"; //TODO настроить расписание
+    }
 }

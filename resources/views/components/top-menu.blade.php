@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-center">
     <a href="/"><button class="m-3 btn btn-secondary">Главная</button></a>
-    <a href="/school"><button class="m-3 btn btn-secondary">Школы</button></a>
+    <a href="/school"><button class="m-3 btn btn-secondary">Залы</button></a>
     <a href=""><button class="m-3 btn btn-secondary">Тренера</button></a>
     <a href="/karateki"><button class="m-3 btn btn-secondary">Ученики</button></a>
     @auth

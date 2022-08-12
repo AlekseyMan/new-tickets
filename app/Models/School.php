@@ -19,6 +19,6 @@ class School extends Model
 
     public function groups(): HasMany
     {
-        return $this->hasMany('groups', 'school_id', 'id');
+        return $this->hasMany(Group::class);
     }
 }
