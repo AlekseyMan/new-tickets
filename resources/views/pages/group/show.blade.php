@@ -1,13 +1,13 @@
 @extends('layouts.index')
 
 @section('content')
-    <div class="d-flex justify-content-start">
+    <div class="d-flex justify-content-start m-3">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addKaratekaToGroup">
-            Добавить спорстмена в группу
+            Добавить спорстменов в группу
         </button>
         <div class="ms-5 d-flex justify-content-between col-xl-7">
-            <h4>{{$group->days}} Время: {{$group->time_start}} - {{$group->time_end}}</h4>
-            <h3>{{$group->coach->surname}} {{$group->coach->name}} {{$group->coach->patronymic}}</h3>
+            <h4>{{$group->formatedSchedule}}</h4>
+            <h3>Тренер: {{$group->coach->surname}} {{$group->coach->name}} {{$group->coach->patronymic}}</h3>
         </div>
     </div>
     <div class="table-responsive">
@@ -25,15 +25,15 @@
             </tr>
             </thead>
             <tbody id="tbody">
-            @foreach($groupUsers as $user)
-                <tr class="text-center" id="trUserId={{$user->id}}">
+            @foreach($group->karateki as $user)
+                <tr class="text-center @if($user->balance < 0) bg-danger @endif" id="trUserId={{$user->id}}">
                     <td>
                         <button type="button" class="btn-danger" data-bs-toggle="modal"
                                 data-bs-target="#removeFromGroup"
                                 onclick="addDataToModal('{{$user->id}}', 'remove')">X
                         </button>
                     </td>
-                    <td class="@if($user->balance < 0) bg-danger @endif" id="userNameId={{$user->id}}">
+                    <td class="" id="userNameId={{$user->id}}">
                         <a href="/karateki/{{$user->id}}" class="text-white text-decoration-none">
                             {{$user->surname}} {{$user->name}}
                         </a>
@@ -56,7 +56,7 @@
                     </td>
                     <td class="@if($user->balance >= 0) bg-success @else bg-danger @endif"
                         id="userBalanceId={{$user->id}}">
-                        <b id="userId={{$user->id}}">{{$user->balance}}</b>
+                        <b id="userId={{$user->id}}">{{$user->balance ?? 0}}</b>
                         <button type="button" class="btn btn-light ms-2" data-bs-toggle="modal"
                                 data-bs-target="#addBalance"
                                 onclick="addDataToModal('{{$user->id}}', 'balance')">+
@@ -77,8 +77,5 @@
             </tbody>
         </table>
     </div>
-    <x-remove-from-group-modal/>
-    <x-add-karateka-to-group-modal karateki="{{$karateki}}"/>
-    <x-add-balance-modal/>
-    <x-add-abonement-modal settings="{{$settings}}"/>
+    <x-add-karateka-to-group-modal groupId="{{$group->id}}"/>
 @endsection

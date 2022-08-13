@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\GroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('school', 'App\Http\Controllers\SchoolController', ['names' => [
         '/' => 'school.index'
     ]]);
+    Route::post('/group/{group}/add-karateki-to-group', [GroupController::class, 'addKaratekiToGroup']);
     Route::resource('group', 'App\Http\Controllers\GroupController');
+    Route::resource('karateki', 'App\Http\Controllers\KaratekiController');
 });
 
 /*

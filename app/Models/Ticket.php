@@ -21,11 +21,11 @@ class Ticket extends Model
 
     public function visits(): HasMany
     {
-        return $this->hasMany('visits', 'ticket_id', 'id');
+        return $this->hasMany(Visit::class, 'ticket_id', 'id');
     }
 
     public function profile(): BelongsTo
     {
-        return $this->belongsTo('profiles', 'id', 'profile_id');
+        return $this->belongsTo(Profile::class, 'id', 'profile_id');
     }
 }

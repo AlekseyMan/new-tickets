@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('school_id');
-            $table->bigInteger('coach__id')->nullable();
+            $table->bigInteger('coach_id')->nullable();
             $table->string('name')->nullable();
             $table->json('times')->nullable();
             $table->json('temporary_info')->nullable();

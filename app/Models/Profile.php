@@ -26,18 +26,29 @@ class Profile extends Model
         'profile_role'
     ];
 
-    public function user(): HasOne
+    public function scopeKarateki($query)
     {
-        return $this->hasOne('users', 'id', 'user_id');
+        return $query->where('profile_role', self::ROLE_KARATEKA);
     }
 
-    public function balance(): HasOne
+    public function scopeCoaches($query)
     {
-        return $this->hasOne('balances', 'profile_id', 'id');
+        return $query->where('profile_role', self::ROLE_COACH);
+    }
+
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function getTicketAttribute()
+    {
+        return Ticket::where('profile_id', $this->id)->latest('id')->first();
     }
 
     public function getFullNameAttribute(): string
     {
         return $this->surname . " " . $this->name . " " . $this->patronymic;
     }
+
 }

@@ -26,14 +26,14 @@
                     @auth('sanctum')
                     <td class="text-muted">
                         <form action="/school/{{$item->id}}/edit" method="GET">
-                            <button class="btn btn-primary">EDIT</button>
+                            <button class="btn btn-primary">Редактировать</button>
                         </form>
                     </td>
                     <td class="text-muted">
                         <form action="/school/{{$item->id}}" method="POST">
                             @csrf
                             <input type="hidden" name="_method" value="DELETE">
-                            <button class="btn btn-danger">DELETE</button>
+                            <button class="btn btn-danger">Удалить</button>
                         </form>
                     </td>
                     @endauth

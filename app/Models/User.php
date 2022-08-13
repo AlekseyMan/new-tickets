@@ -45,6 +45,6 @@ class User extends Authenticatable
 
     public function profile(): BelongsTo
     {
-        return $this->belongsTo('profiles', 'user_id', 'id');
+        return $this->belongsTo('karateki', 'user_id', 'id');
     }
 }

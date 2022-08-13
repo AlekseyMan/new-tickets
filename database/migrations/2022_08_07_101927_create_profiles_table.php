@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('karateki', function (Blueprint $table) {
             $table->id();
             $table->char('name', 50);
             $table->char('patronymic', 50)->nullable();
@@ -23,8 +23,9 @@ return new class extends Migration
             $table->date('birthday')->nullable();
             $table->float('weight')->nullable();
             $table->bigInteger('coach_id')->nullable();
+            $table->bigInteger('balance')->nullable();
             $table->string('profile_role')->nullable();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->json('contacts')->nullable();
             $table->foreign('user_id')
                 ->on('users')
@@ -41,6 +42,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('karateki');
     }
 };

@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('balances', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('profile_id')->unique();
-            $table->bigInteger('current_balance');
-            $table->timestamps();
+        Schema::table('groups', function (Blueprint $table) {
+            $table->renameColumn('times', 'schedule');
         });
     }
 
@@ -28,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('balances');
+        Schema::table('groups', function (Blueprint $table) {
+            $table->renameColumn('schedule', 'times');
+        });
     }
 };

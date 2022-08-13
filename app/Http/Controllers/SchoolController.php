@@ -16,7 +16,7 @@ class SchoolController extends Controller
 
     public function create(): View
     {
-        return view('pages.school.create', ['coaches' => Profile::where('profile_role', Profile::ROLE_COACH)->get()]);
+        return view('pages.school.create', ['coaches' => Profile::coaches()->get()]);
     }
 
     public function store(SchoolRequest $request, School $school)
@@ -29,7 +29,10 @@ class SchoolController extends Controller
 
     public function show(School $school): View
     {
-        return view('pages.school.show', ['school' => $school]);
+        return view('pages.school.show', [
+            'school' => $school,
+            'coaches' => Profile::coaches()->get()
+        ]);
     }
 
     public function edit(School $school): View

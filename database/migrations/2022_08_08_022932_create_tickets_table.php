@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('profile_id')
-                ->on('profiles')
+                ->on('karateki')
                 ->references('id')
                 ->onDelete('cascade');
         });

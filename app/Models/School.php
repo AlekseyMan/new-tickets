@@ -10,6 +10,16 @@ class School extends Model
 {
     use HasFactory;
 
+    const DAYS = [
+        'Пн' => 'Понедельник',
+        'Вт' => 'Вторник',
+        'Ср' => 'Среда',
+        'Чт' => 'Четверг',
+        'Пт' => 'Пятница',
+        'Сб' => 'Суббота',
+        'Вс' => 'Воскресенье',
+    ];
+
     protected $fillable = [
         'name',
         'address',
@@ -20,5 +30,10 @@ class School extends Model
     public function groups(): HasMany
     {
         return $this->hasMany(Group::class);
+    }
+
+    public function getDaysAttribute(): array
+    {
+        return self::DAYS;
     }
 }

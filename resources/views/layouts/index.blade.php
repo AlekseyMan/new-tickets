@@ -11,6 +11,7 @@
 
     <!-- Scripts -->
     <script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
+    <script src="{{asset('js/helpers.js?' . date('H:i:s'))}}"></script>
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css">
