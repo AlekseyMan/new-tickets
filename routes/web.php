@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VisitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,12 +25,26 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 
 Route::group(['middleware' => ['auth']], function () {
+
+    //Действия с балансом профиля
+    Route::group(['prefix' => '/balance/{profile}'], function(){
+        Route::post('/update', [ProfileController::class, 'updateBalance']);
+        Route::post('/new-ticket', [ProfileController::class, 'newTicket']);
+    });
+
+    //Действия с пользователями групп
+    Route::group(['prefix' => '/group/{group}'], function() {
+        Route::post('/add-karateki-to-group', [GroupController::class, 'addKaratekiToGroup']);
+        Route::post('/remove-from-group', [GroupController::class, 'removeFromGroup']);
+    });
+
+    //Resource контроллеры: school, karateki, group, visit
+    Route::resource('group', 'App\Http\Controllers\GroupController');
+    Route::resource('karateki', 'App\Http\Controllers\KaratekiController');
+    Route::resource('visit', 'App\Http\Controllers\VisitController');
     Route::resource('school', 'App\Http\Controllers\SchoolController', ['names' => [
         '/' => 'school.index'
     ]]);
-    Route::post('/group/{group}/add-karateki-to-group', [GroupController::class, 'addKaratekiToGroup']);
-    Route::resource('group', 'App\Http\Controllers\GroupController');
-    Route::resource('karateki', 'App\Http\Controllers\KaratekiController');
 });
 
 /*

@@ -52,4 +52,9 @@ class GroupController extends Controller
         $group->karateki()->attach($request->ids);
         return back();
     }
+    public function removeFromGroup(Request $request, Group $group)
+    {
+        $group->karateki()->detach($request->profile_id);
+        return back();
+    }
 }

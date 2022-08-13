@@ -28,4 +28,18 @@ class Ticket extends Model
     {
         return $this->belongsTo(Profile::class, 'id', 'profile_id');
     }
+
+    public function isClosed(): bool
+    {
+        if(count($this->visits) >= Setting::whereName('visitsNumber')->first()->value OR $this->end_date < today()) {
+            $this->update(['is_closed' => 1]);
+            return 1;
+        };
+        return 0;
+    }
+
+    public function getVisitsNumberAttribute()
+    {
+        return Visit::where('ticket_id', $this->id)->visited()->count();
+    }
 }

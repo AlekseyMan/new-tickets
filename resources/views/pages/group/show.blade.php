@@ -26,7 +26,7 @@
             </thead>
             <tbody id="tbody">
             @foreach($group->karateki as $user)
-                <tr class="text-center @if($user->balance < 0) bg-danger @endif" id="trUserId={{$user->id}}">
+                <tr class="text-center @if((int)$user->balance < 0) bg-danger @endif" id="trUserId={{$user->id}}">
                     <td>
                         <button type="button" class="btn-danger" data-bs-toggle="modal"
                                 data-bs-target="#removeFromGroup"
@@ -34,27 +34,35 @@
                         </button>
                     </td>
                     <td class="" id="userNameId={{$user->id}}">
-                        <a href="/karateki/{{$user->id}}" class="text-white text-decoration-none">
+                        <a href="/karateki/{{$user->id}}" class="text-black text-decoration-none">
                             {{$user->surname}} {{$user->name}}
                         </a>
                     </td>
                     <td>
-                        <button data-ticketid="{{$user->ticket->id ?? 0}}"
-                                class="btn @isset($user->ticket->visit) btn-success @endisset"
-                                onclick="markVisit('visit-{{$user->id}}-{{$user->ticket->id ?? 0}}')"
-                                id="visit-{{$user->id}}-{{$user->ticket->id ?? 0}}">
-                            Посетил
-                        </button>
+                        @if(isset($user->ticket) AND $user->ticket->paused == 1)
+                            Абонемент на паузе
+                        @else
+                            <button data-ticketid="{{$user->ticket->id ?? 0}}"
+                                    class="btn @isset($user->ticket->visit) btn-success @endisset"
+                                    onclick="markVisit('visit-{{$user->id}}-{{$user->ticket->id ?? 0}}')"
+                                    id="visit-{{$user->id}}-{{$user->ticket->id ?? 0}}">
+                                Посетил
+                            </button>
+                        @endif
                     </td>
                     <td>
-                        <button data-ticketid="{{$user->ticket->id ?? 0}}"
-                                class="btn @isset($user->ticket->miss) btn-danger @endisset"
-                                onclick="markVisit('miss-{{$user->id}}-{{$user->ticket->id ?? 0}}')"
-                                id="miss-{{$user->id}}-{{$user->ticket->id ?? 0}}">
-                            Пропустил
-                        </button>
+                        @if(isset($user->ticket) AND $user->ticket->paused == 1)
+                            Абонемент на паузе
+                        @else
+                            <button data-ticketid="{{$user->ticket->id ?? 0}}"
+                                    class="btn @isset($user->ticket->miss) btn-danger @endisset"
+                                    onclick="markVisit('miss-{{$user->id}}-{{$user->ticket->id ?? 0}}')"
+                                    id="miss-{{$user->id}}-{{$user->ticket->id ?? 0}}">
+                                Пропустил
+                            </button>
+                        @endif
                     </td>
-                    <td class="@if($user->balance >= 0) bg-success @else bg-danger @endif"
+                    <td class=""
                         id="userBalanceId={{$user->id}}">
                         <b id="userId={{$user->id}}">{{$user->balance ?? 0}}</b>
                         <button type="button" class="btn btn-light ms-2" data-bs-toggle="modal"
@@ -62,20 +70,29 @@
                                 onclick="addDataToModal('{{$user->id}}', 'balance')">+
                         </button>
                     </td>
-                    <td id="count-{{$user->id}}-{{$user->ticket->id ?? 0}}">{{$user->ticket->visits_number ?? 0}}</td>
-                    <td class="text-center"
-                        id="ticketDateid={{$user->id}}">{{$user->ticket->end_date ?? 'Нет абонемента'}}</td>
-                    <td>@isset($user->ticket->end_date)
+                    <td id="count-{{$user->id}}-{{$user->ticket->id ?? 0}}">{{$user->ticket?->visitsNumber ?? 0}}</td>
+                    <td class="text-center" id="ticketDateid={{$user->id}}">
+                        @if(isset($user->ticket->is_closed) AND $user->ticket->is_closed == 0)
+                            {{$user->ticket?->end_date}}
+                        @else
+                            Нет абонемента
+                        @endif
+                    </td>
+                    <td>@if(isset($user->ticket->is_closed) AND $user->ticket->is_closed == 0)
                         @else
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAbonement"
                                     id="button-{{$user->id}}-{{$user->ticket->id ?? 0}}"
                                     onclick="addDataToModal('{{$user->id}}', 'abonement')">+
                             </button>
-                        @endisset</td>
+                        @endisset
+                    </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
     </div>
+    <x-add-abonement-modal/>
+    <x-add-balance-modal/>
+    <x-remove-from-group-modal groupId="{{$group->id}}"/>
     <x-add-karateka-to-group-modal groupId="{{$group->id}}"/>
 @endsection

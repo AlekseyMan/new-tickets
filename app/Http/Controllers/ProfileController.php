@@ -78,4 +78,16 @@ class ProfileController extends Controller
     {
         //
     }
+
+    public function updateBalance(Request $request, Profile $profile)
+    {
+        $profile->updateBalance($request->balance);
+        return back();
+    }
+
+    public function newTicket(Request $request, Profile $profile)
+    {
+        $profile->openNewTicket($request->balance);
+        return back();
+    }
 }

@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('visits', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
             $table->unsignedBigInteger('ticket_id');
             $table->bigInteger('coach_id');
             $table->boolean('visited')->default(true);

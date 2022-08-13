@@ -14,22 +14,27 @@ async function markVisit(event) {
     if (document.getElementById(event).dataset.ticketid === "0") {
         return alert("Необходимо завести/обновить абонемент")
     }
-    let sendData = event.replace('0', document.getElementById(event).dataset.ticketid)
+    let visited = 1
+    if(event.substr(0,4) == "miss"){
+        visited = 0
+    }
+
     const token = document.getElementById('token').dataset.token
 
-    let response = await fetch('/mark-visit', {
+    let response = await fetch('/visit', {
         method: 'POST',
         headers: new Headers({
             'Content-Type': 'application/json'
         }),
         body: JSON.stringify({
-            data: sendData,
+            visited: visited,
+            ticket_id: event.substr(-1),
             _token: token
         }),
     });
     let res = await response.json()
-
-    if (res.btnType === "visit") {
+    console.log(res)
+    if (visited === 1) {
         document.getElementById(event).className = "btn btn-success"
         document.getElementById(event.replace('visit', 'miss')).className = "btn"
         document.getElementById(event.replace('visit', 'count')).innerText = res.visits_number
@@ -39,78 +44,12 @@ async function markVisit(event) {
         document.getElementById(event.replace('miss', 'count')).innerText = res.visits_number
     }
 
-    if (res.isClosed === 1) {
+    if (res.is_closed === 1) {
         alert("У " + res.userName + " закончился абонемент. Обновите страницу, чтобы завести новый абонемент.")
         document.getElementById(event.replace(res.btnType, 'count')).classList.add("bg-danger")
         document.getElementById("ticketDateid=" + res.userId).classList.add("bg-danger")
         document.getElementById("ticketDateid=" + res.userId).innerText = "Абонемент закончился"
     }
-
-}
-
-async function addKaratekaToGroup() {
-    const token = document.getElementById('token').dataset.token
-    const id = document.getElementById('selectKarateka').value
-    const group_id = location.pathname.split('/').pop()
-    let response = await fetch('/add-to-group', {
-        method: 'POST',
-        headers: new Headers({
-            'Content-Type': 'application/json'
-        }),
-        body: JSON.stringify({
-            group_id: group_id,
-            profile_id: id,
-            _token: token
-        }),
-    });
-    let res = await response.json()
-
-    let bg = ""
-    if (res.profile.balance < 0) {
-        bg = "bg-danger"
-    } else {
-        bg = "bg-success"
-    }
-
-    let ticketId = 0
-    let visits = 0
-    let abonementDate = 'Нет абонемента'
-    if (res.profile.ticket !== null) {
-        ticketId = res.profile.ticket.id
-        visits = res.profile.ticket.visits_number
-        abonementDate = res.profile.ticket.end_date
-    }
-
-    let elem = document.createElement("tr");
-    elem.id = "trUserId=" + res.profile.id
-    elem.className = "text-center"
-    elem.innerHTML = '<td><button type="button" class="btn-danger" data-bs-toggle="modal" data-bs-target="#removeFromGroup"' +
-        ' onclick="addDataToModal(' + res.profile.id + ', \'remove\')">X</button></td>' +
-        '<td class="' + bg + '" id="userNameId=' + res.profile.id + '">' + res.profile.surname + ' ' + res.profile.name + '</td>' +
-        '<td>' +
-        '<button data-ticketid="' + ticketId + '" class="btn"' +
-        ' onclick="markVisit(\'visit-'+ res.profile.id +'-' + ticketId + '\')" id="visit-'+ res.profile.id +'-' + ticketId + '">' +
-        'Посетил' +
-        '</button>' +
-        '</td>' +
-        '<td>' +
-        '<button data-ticketid="' + ticketId + '" class="btn"' +
-        ' onclick="markVisit(\'miss-'+ res.profile.id +'-' + ticketId + '\')" id="miss-'+ res.profile.id +'-' + ticketId + '">' +
-        'Пропустил' +
-        '</button>' +
-        '</td>' +
-        '<td class="' + bg +'" id="userBalanceId='+ res.profile.id +'">' +
-        '<b id="userId='+ res.profile.id +'">'+ res.profile.balance +'</b>' +
-        '<button type="button" class="btn btn-light ms-2" data-bs-toggle="modal" data-bs-target="#addBalance"' +
-        ' onclick="addDataToModal ('+ res.profile + ', \'balance\')">+</button>' +
-        '</td>' +
-        '<td id="count-'+ res.profile.id +'-' + ticketId + '">' + visits + '</td>' +
-        '<td class="text-center"' +
-        ' id="ticketDateid='+ res.profile.id +'">' + abonementDate + '</td>' +
-        '<td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAbonement"' +
-        ' onclick="addDataToModal('+ res.profile + ', \'abonement\')">+</button></td>'
-
-    document.getElementById("tbody").insertAdjacentElement('beforeend', elem)
 }
 
 function addDataToModal(id, type) {
@@ -122,40 +61,21 @@ function addDataToModal(id, type) {
             document.getElementById('balance-input').value = ''
             obj = document.getElementById('addBalanceLabel')
             headerText = 'Добавить оплату для: ' + fio
+            document.getElementById('update-balance').action = "/balance/"+ id +"/update"
             break;
         case 'abonement':
             obj = document.getElementById('addAbonementLabel')
             headerText = 'Открыть новый абонемент для: ' + fio
+            document.getElementById('add-abonement').action = "/balance/"+ id +"/new-ticket"
             break;
         case 'remove':
             obj = document.getElementById('removeFromGroupLabel')
             headerText = 'Подтверждаете удаление из группы ' + fio
+            document.getElementById("remove-user-id").value = id
     }
 
     obj.innerText = headerText
     obj.dataset.userid = id
-}
-
-
-async function addBalance() {
-    const token = document.getElementById('token').dataset.token
-    const amount = document.getElementById('balance-input').value
-    const id = document.getElementById('addBalanceLabel').dataset.userid
-    let response = await fetch('/add-amount', {
-        method: 'POST',
-        headers: new Headers({
-            'Content-Type': 'application/json'
-        }),
-        body: JSON.stringify({
-            amount: amount,
-            id: id,
-            _token: token
-        }),
-    });
-    let res = await response.json()
-
-    document.getElementById("userId=" + res.userId).innerText = res.balance
-    backgrounds(res.userId, res.balance)
 }
 
 async function addTicket() {
@@ -189,26 +109,6 @@ function backgrounds(id, balance) {
         document.getElementById("userNameId=" + id).className = ""
         document.getElementById("userBalanceId=" + id).className = "bg-success"
     }
-}
-
-async function removeFromGroup() {
-    const token = document.getElementById('token').dataset.token
-    const id = document.getElementById('removeFromGroupLabel').dataset.userid
-    const groupId = location.pathname.split('/')[2]
-    let response = await fetch('/remove-from-group', {
-        method: 'POST',
-        headers: new Headers({
-            'Content-Type': 'application/json'
-        }),
-        body: JSON.stringify({
-            id: id,
-            groupId: groupId,
-            _token: token
-        }),
-    });
-    let res = await response.json()
-
-    document.getElementById("trUserId=" + id).classList.add("d-none")
 }
 
 async function newKarateka() {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -23,7 +24,8 @@ class Profile extends Model
         'birthday',
         'weight',
         'coach_id',
-        'profile_role'
+        'profile_role',
+        'balance'
     ];
 
     public function scopeKarateki($query)
@@ -51,4 +53,18 @@ class Profile extends Model
         return $this->surname . " " . $this->name . " " . $this->patronymic;
     }
 
+    public function updateBalance(int $value)
+    {
+        $newBalance = (int)$this->balance+ $value;
+        $this->update(['balance' => $newBalance]);
+    }
+
+    public function openNewTicket(int $value)
+    {
+        Ticket::create([
+            'profile_id' => $this->id,
+            'end_date'   => Carbon::now()->addMonth()
+        ]);
+        $this->updateBalance($value);
+    }
 }
