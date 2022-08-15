@@ -21,13 +21,15 @@
                 <select name="coach_id" class="form-select">
                     @foreach($coaches as $coach)
                         <option value="{{$coach->id}}">
-                            {{$coach->surname}} {{$coach->name}} {{$coach->patronymic}}
+                            {{$coach->fullName}}
                         </option>
                     @endforeach
                 </select>
                 <div>
-                    <div class="form-select mt-2" onclick="hideShowAdvancedBlock()"><b>Дополнительные параметры</b></div>
+                    <div class="form-select mt-2 cursor-pointer" onclick="hideShowAdvancedBlock()"><b>Дополнительные параметры</b></div>
                     <div class="form-control d-none" id="advanced-block">
+                        <label for="patronymic">Введите отчество</label>
+                        <input type="text" class="form-control mb-3" name="patronymic" placeholder="Введите отчество" autocomplete="off">
                         <label for="birthday">Дата рождения</label>
                         <input type="date" value="{{old('birthday')}}" name="birthday" class="form-control mb-2">
                         <label for="weight">Вес</label>

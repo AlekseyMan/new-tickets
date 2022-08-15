@@ -33,7 +33,6 @@ async function markVisit(event) {
         }),
     });
     let res = await response.json()
-    console.log(res)
     if (visited === 1) {
         document.getElementById(event).className = "btn btn-success"
         document.getElementById(event.replace('visit', 'miss')).className = "btn"

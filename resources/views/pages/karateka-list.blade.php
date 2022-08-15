@@ -31,7 +31,7 @@
                             @endisset
                         >
                             <a href="/karateki/{{$user->id}}" class="text-dark text-decoration-none">
-                                <h3>{{$user->surname. " " . $user->name}}</h3>
+                                <h3>{{$user->fullName}}</h3>
                             </a>
                         </td>
                         <td>{{$user->birthday}}</td>

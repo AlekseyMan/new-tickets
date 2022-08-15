@@ -3,7 +3,7 @@
 @section('content')
     <div class="table-responsive">
         <div class="col-xl-12 d-flex justify-content-center m-3" id="token" data-token="{{ csrf_token() }}">
-            <h2>{{$profile->surname}} {{$profile->name}}</h2>
+            <h2>{{$profile->fullName}}</h2>
         </div>
         @foreach($tickets as $ticket)
             @isset($ticket['allVisits'])

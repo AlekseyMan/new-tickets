@@ -77,7 +77,7 @@
             <select name="coach_id" class="form-select">
                 @foreach($coaches as $coach)
                     <option value="{{$coach->id}}">
-                        {{$coach->surname . ' ' . $coach->name . ' ' . $coach->patronymic}}
+                        {{$coach->fullName}}
                     </option>
                 @endforeach
             </select>

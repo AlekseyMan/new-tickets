@@ -11,7 +11,7 @@ class KaratekiController extends Controller
 {
     public function index()
     {
-        return view('pages.karateki.index', ['karateki' => Profile::karateki()->get()]);
+        return view('pages.karateki.index', ['karateki' => Profile::karateki()->orderBy('surname')->orderBy('name')->get()]);
     }
 
     public function create()
@@ -24,7 +24,7 @@ class KaratekiController extends Controller
 
     public function store(Request $request)
     {
-        Profile::create($request->except('_token'));
+        Profile::updateOrCreate($request->except('_token'));
         return back();
     }
 

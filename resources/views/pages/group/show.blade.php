@@ -35,7 +35,7 @@
                     </td>
                     <td class="" id="userNameId={{$user->id}}">
                         <a href="/karateki/{{$user->id}}" class="text-black text-decoration-none">
-                            {{$user->surname}} {{$user->name}}
+                            {{$user->fullName}}
                         </a>
                     </td>
                     <td>
