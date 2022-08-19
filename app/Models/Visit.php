@@ -21,23 +21,32 @@ class Visit extends Model
 
     public function ticket(): BelongsTo
     {
-        return $this->belongsTo('tickets', 'id', 'ticket_id');
+        return $this->belongsTo(Ticket::class, 'id', 'ticket_id');
     }
 
     public function addVisitToTable($data)
     {
-        $data['coach_id'] = Auth::id();
-        $data['date'] = today();
-        $this->updateOrCreate(
-            [
-                'date' => today()
-            ],
-            $data);
-        $ticket = Ticket::find($data['ticket_id']);
-        return response()->json([
-            'is_closed' => $ticket->isClosed(),
-            'visits_number' => $ticket->visitsNumber
-        ]);
+        if(isset($data['date'])) {
+            $this->create($data);
+            return back();
+        } else {
+            $data['coach_id'] = Auth::id();
+            $data['date'] = today();
+            $this->updateOrCreate(
+                [
+                    'date' => today()
+                ],
+                $data);
+            $ticket = Ticket::find($data['ticket_id']);
+            return response()->json([
+                'is_closed' => $ticket->isClosed(),
+                'visits_number' => $ticket->visitsNumber
+            ]);
+        }
+    }
+
+    public function getCoachAttribute(){
+        return Profile::where('id', $this->coach_id)->first();
     }
 
     public function scopeVisited($query)
