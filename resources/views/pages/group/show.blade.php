@@ -34,7 +34,7 @@
                         </button>
                     </td>
                     <td class="" id="userNameId={{$user->id}}">
-                        <a href="/karateki/{{$user->id}}" class="text-black text-decoration-none">
+                        <a href="/profile/{{$user->id}}/ticket" class="text-black text-decoration-none">
                             {{$user->fullName}}
                         </a>
                     </td>

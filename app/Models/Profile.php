@@ -48,6 +48,11 @@ class Profile extends Model
         return Ticket::where('profile_id', $this->id)->latest('id')->first();
     }
 
+    public function getTicketsAttribute()
+    {
+        return Ticket::where('profile_id', $this->id)->orderBy('id', 'desc')->get();
+    }
+
     public function getFullNameAttribute(): string
     {
         return $this->surname . " " . $this->name . " " . $this->patronymic;

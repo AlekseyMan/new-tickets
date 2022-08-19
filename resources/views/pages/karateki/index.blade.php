@@ -26,7 +26,7 @@
                                 class="@if($user->ticket->paused === 1) bg-blue @else bg-success @endif"
                             @endisset
                         >
-                            <a href="/karateki/{{$user->id}}" class="text-dark text-decoration-none">
+                            <a href="/profile/{{$user->id}}/ticket" class="text-dark text-decoration-none">
                                 <h3>{{$user->fullName}}</h3>
                             </a>
                         </td>
