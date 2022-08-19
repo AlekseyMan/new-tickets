@@ -42,6 +42,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('group', 'App\Http\Controllers\GroupController');
     Route::resource('karateki', 'App\Http\Controllers\KaratekiController');
     Route::resource('visit', 'App\Http\Controllers\VisitController');
+    Route::resource('profile/{profile}/ticket', 'App\Http\Controllers\TicketController');
     Route::resource('school', 'App\Http\Controllers\SchoolController', ['names' => [
         '/' => 'school.index'
     ]]);
