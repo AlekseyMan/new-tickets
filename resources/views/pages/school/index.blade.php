@@ -10,10 +10,7 @@
             <thead>
             <tr>
                 <th class="col-xl-8 text-center">Выберите клуб</th>
-                @auth('sanctum')
                 <th class="col-xl-2">Редактировать</th>
-                <th class="col-xl-2">Удалить</th>
-                @endauth
             </tr>
             </thead>
             <tbody>
@@ -29,13 +26,13 @@
                             <button class="btn btn-primary">Редактировать</button>
                         </form>
                     </td>
-                    <td class="text-muted">
-                        <form action="/school/{{$item->id}}" method="POST">
-                            @csrf
-                            <input type="hidden" name="_method" value="DELETE">
-                            <button class="btn btn-danger">Удалить</button>
-                        </form>
-                    </td>
+{{--                    <td class="text-muted">--}}
+                        {{--                        <form action="/school/{{$item->id}}" method="POST">--}}
+                        {{--                            @csrf--}}
+                        {{--                            <input type="hidden" name="_method" value="DELETE">--}}
+                        {{--                            <button class="btn btn-danger">Удалить</button>--}}
+                        {{--                        </form>--}}
+                        {{--                    </td>--}}
                     @endauth
                 </tr>
             @endforeach

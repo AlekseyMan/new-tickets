@@ -48,4 +48,28 @@ class TicketController extends Controller
     {
         //
     }
+
+    public function resumeTicket(Profile $profile, Ticket $ticket)
+    {
+        $ticket->resume();
+        return back();
+    }
+
+    public function pauseTicket(Profile $profile, Ticket $ticket)
+    {
+        $ticket->pause();
+        return back();
+    }
+
+    public function closeTicket(Profile $profile, Ticket $ticket)
+    {
+        $ticket->close();
+        return back();
+    }
+
+    public function openTicket(Profile $profile, Ticket $ticket)
+    {
+        $ticket->open();
+        return back();
+    }
 }

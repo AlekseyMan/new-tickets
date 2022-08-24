@@ -53,7 +53,14 @@
             <tr>
                 @foreach($ticket->visits as $visit)
                     <td>
-                        <button class="btn btn-danger">Удалить</button>
+                        <form action="/visit/{{$visit->id}}" method="POST">
+                            @csrf
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button class="btn btn-danger">
+                                Удалить
+                            </button>
+                        </form>
+
                     </td>
                 @endforeach
             </tr>
@@ -62,17 +69,34 @@
         <div class="d-flex justify-content-center mb-4">
             @if($ticket->is_closed !== 1)
                 <button class="btn btn-success text-center mt-2 me-2">Сохранить</button>
-                <button class="btn btn-danger text-center mt-2 me-2">Закрыть абонемент</button>
+                <button class="btn btn-danger text-center mt-2 me-2">
+                    <a href="/profile/{{$profile->id}}/ticket/{{$ticket->id}}/close-ticket" class="text-decoration-none text-white">
+                        Закрыть абонемент
+                    </a>
+                </button>
                 @if($ticket->paused === 0)
-                    <button class="btn btn-primary text-center mt-2 me-2">Приостановить абонемент</button>
+                    <button class="btn btn-primary text-center mt-2 me-2">
+                        <a href="/profile/{{$profile->id}}/ticket/{{$ticket->id}}/pause-ticket" class="text-decoration-none text-white">
+                            Приостановить абонемент
+                        </a>
+                    </button>
                 @else
-                    <button class="btn btn-success text-center mt-2 me-2">Возобновить абонемент</button>
+                    <button class="btn btn-success text-center mt-2 me-2">
+                        <a href="/profile/{{$profile->id}}/ticket/{{$ticket->id}}/resume-ticket" class="text-decoration-none text-white">
+                            Возобновить абонемент
+                        </a>
+                    </button>
                 @endif
             @else
-                <button class="btn btn-success text-center mt-2 me-2">Редактировать абонемент№{{$ticket->id}}</button>
+                <button class="btn btn-success text-center mt-2 me-2">
+                    <a href="/profile/{{$profile->id}}/ticket/{{$ticket->id}}/open-ticket" class="text-decoration-none text-white">
+                        Открыть абонемент
+                    </a>
+                </button>
             @endif
         </div>
     </form>
+    @if($ticket->is_closed !== 1)
     <form class="d-flex justify-content-center mt-2 mb-2" action="/visit" method="POST">
         @csrf
         <input type="hidden" name="coach_id" value="{{$profile->coach_id ?? 1}}">
@@ -81,4 +105,5 @@
         <input type="date" class="me-2" name="date">
         <button class="btn btn-primary">Добавить посещение</button>
     </form>
+    @endif
 @endsection

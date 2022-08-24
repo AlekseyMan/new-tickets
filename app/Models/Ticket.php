@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,7 +22,7 @@ class Ticket extends Model
 
     public function visits(): HasMany
     {
-        return $this->hasMany(Visit::class, 'ticket_id', 'id');
+        return $this->hasMany(Visit::class, 'ticket_id', 'id')->orderBy('date');
     }
 
     public function profile(): BelongsTo
@@ -42,4 +43,37 @@ class Ticket extends Model
     {
         return Visit::where('ticket_id', $this->id)->visited()->count();
     }
+
+    public function resume()
+    {
+        $unusedDays = strtotime($this->end_date) - strtotime($this->pause_date);
+        $this->update([
+            'end_date'   => Carbon::parse(strtotime(today()) + $unusedDays)->addDay()->format("Y-m-d"),
+            'pause_date' => null,
+            'paused'     => false
+        ]);
+    }
+
+    public function pause()
+    {
+        $this->update([
+            'pause_date' => today(),
+            'paused'     => true
+        ]);
+    }
+
+    public function close()
+    {
+        $this->update([
+            'is_closed'     => true
+        ]);
+    }
+
+    public function open()
+    {
+        $this->update([
+            'is_closed'     => false
+        ]);
+    }
+
 }
