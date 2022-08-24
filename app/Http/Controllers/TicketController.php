@@ -72,9 +72,4 @@ class TicketController extends Controller
         $ticket->open();
         return back();
     }
-
-    public function addPaymentForTicket(Profile $profile, Ticket $ticket)
-    {
-
-    }
 }

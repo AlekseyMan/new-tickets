@@ -26,8 +26,10 @@ class Visit extends Model
 
     public function addVisitToTable($data)
     {
+        $ticket = Ticket::find($data['ticket_id']);
         if(isset($data['date'])) {
             $this->create($data);
+            $ticket->isClosed();
             return back();
         } else {
             $data['coach_id'] = Auth::id();
@@ -38,7 +40,6 @@ class Visit extends Model
                     'ticket_id' => $data['ticket_id']
                 ],
                 $data);
-            $ticket = Ticket::find($data['ticket_id']);
             return response()->json([
                 'is_closed' => $ticket->isClosed(),
                 'visits_number' => $ticket->visitsNumber
