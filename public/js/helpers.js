@@ -28,7 +28,7 @@ async function markVisit(event) {
         }),
         body: JSON.stringify({
             visited: visited,
-            ticket_id: event.substr(-1),
+            ticket_id: event.split('-')[2],
             _token: token
         }),
     });
