@@ -65,10 +65,13 @@
                     <td class=""
                         id="userBalanceId={{$user->id}}">
                         <b id="userId={{$user->id}}">{{$user->balance ?? 0}}</b>
-                        <button type="button" class="btn btn-light ms-2" data-bs-toggle="modal"
-                                data-bs-target="#addBalance"
-                                onclick="addDataToModal('{{$user->id}}', 'balance')">+
-                        </button>
+                        @if($user->balance < 0)
+                            <button type="button" class="btn btn-light ms-2">
+                                <a href="/balance/{{$user->id}}/addPaymentForTicket" class="text-decoration-none text-black">
+                                    Оплатить
+                                </a>
+                            </button>
+                        @endif
                     </td>
                     <td id="count-{{$user->id}}-{{$user->ticket->id ?? 0}}">{{$user->ticket?->visitsNumber ?? 0}}</td>
                     <td class="text-center" id="ticketDateid={{$user->id}}">
@@ -80,9 +83,10 @@
                     </td>
                     <td>@if(isset($user->ticket->is_closed) AND $user->ticket->is_closed == 0)
                         @else
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAbonement"
-                                    id="button-{{$user->id}}-{{$user->ticket->id ?? 0}}"
-                                    onclick="addDataToModal('{{$user->id}}', 'abonement')">+
+                            <button class="btn btn-primary">
+                                <a href="/balance/{{$user->id}}/new-ticket" class="text-decoration-none text-white">
+                                    +
+                                </a>
                             </button>
                         @endisset
                     </td>
@@ -91,8 +95,6 @@
             </tbody>
         </table>
     </div>
-    <x-add-abonement-modal/>
-    <x-add-balance-modal/>
     <x-remove-from-group-modal groupId="{{$group->id}}"/>
     <x-add-karateka-to-group-modal groupId="{{$group->id}}"/>
 @endsection

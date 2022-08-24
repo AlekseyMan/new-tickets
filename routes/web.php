@@ -29,8 +29,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     //Действия с балансом профиля
     Route::group(['prefix' => '/balance/{profile}'], function () {
-        Route::post('/update', [ProfileController::class, 'updateBalance']);
-        Route::post('/new-ticket', [ProfileController::class, 'newTicket']);
+        Route::get('/addPaymentForTicket', [ProfileController::class, 'addPaymentForTicket']);
+        Route::get('/new-ticket', [ProfileController::class, 'newTicket']);
     });
 
     //Действия с пользователями групп

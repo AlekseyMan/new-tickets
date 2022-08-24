@@ -31,10 +31,11 @@ class Visit extends Model
             return back();
         } else {
             $data['coach_id'] = Auth::id();
-            $data['date'] = today();
+            $data['date'] = today()->format("Y-m-d");
             $this->updateOrCreate(
                 [
-                    'date' => today()
+                    'date' => today()->format("Y-m-d"),
+                    'ticket_id' => $data['ticket_id']
                 ],
                 $data);
             $ticket = Ticket::find($data['ticket_id']);

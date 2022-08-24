@@ -30,7 +30,7 @@ class Profile extends Model
 
     public function scopeKarateki($query)
     {
-        return $query->where('profile_role', self::ROLE_KARATEKA);
+        return $query->where('profile_role', self::ROLE_KARATEKA)->orderBy('surname')->orderBy('name');
     }
 
     public function scopeCoaches($query)
@@ -60,7 +60,7 @@ class Profile extends Model
 
     public function updateBalance(int $value)
     {
-        $newBalance = (int)$this->balance+ $value;
+        $newBalance = (int)$this->balance + $value;
         $this->update(['balance' => $newBalance]);
     }
 
@@ -70,6 +70,6 @@ class Profile extends Model
             'profile_id' => $this->id,
             'end_date'   => Carbon::now()->addMonth()
         ]);
-        $this->updateBalance($value);
+        $this->updateBalance(-$value);
     }
 }
