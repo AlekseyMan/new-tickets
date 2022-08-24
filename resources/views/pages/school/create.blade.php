@@ -21,7 +21,7 @@
             <label for="contacts['phone']">Контактный телефон</label>
             <div class="text-danger"> {{$errors->first("contacts[phone]")}} </div>
             <input class="form-control m-2" type="tel" name="contacts[phone]" id="contacts[phone]" autocomplete="off"
-                   value="{{ old("contacts[phone]") }}">
+                   value="{{ old("contacts[phone]") }}" placeholder="+71234567890">
             <label for="contacts[coach]">Ответственный за клуб</label>
             <div class="text-danger"> {{$errors->first("contacts[coach]")}} </div>
             <select name="contacts[coach]" id="contacts[coach]" class="form-control form-select m-2">

@@ -54,10 +54,23 @@
                 <div class="d-flex justify-content-center mb-4">
                     <button class="btn btn-success text-center mt-2 me-2"><a href="ticket/{{$ticket->id}}/edit" class="text-decoration-none text-white">Редактировать абонемент№{{$ticket->id}}</a></button>
                     @if($ticket->is_closed !== 1)
+                        <button class="btn btn-danger text-center mt-2 me-2">
+                            <a href="/profile/{{$profile->id}}/ticket/{{$ticket->id}}/close-ticket" class="text-decoration-none text-white">
+                                Закрыть абонемент
+                            </a>
+                        </button>
                         @if($ticket->paused === 0)
-                            <button class="btn btn-primary text-center mt-2 me-2">Приостановить абонемент</button>
+                            <button class="btn btn-primary text-center mt-2 me-2">
+                                <a href="/profile/{{$profile->id}}/ticket/{{$ticket->id}}/pause-ticket" class="text-decoration-none text-white">
+                                    Приостановить абонемент
+                                </a>
+                            </button>
                         @else
-                            <button class="btn btn-success text-center mt-2 me-2">Возобновить абонемент</button>
+                            <button class="btn btn-success text-center mt-2 me-2">
+                                <a href="/profile/{{$profile->id}}/ticket/{{$ticket->id}}/resume-ticket" class="text-decoration-none text-white">
+                                    Возобновить абонемент
+                                </a>
+                            </button>
                         @endif
                     @endif
                 </div>

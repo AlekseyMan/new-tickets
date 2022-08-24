@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VisitController;
+use App\Http\Controllers\TicketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,7 @@ use App\Http\Controllers\VisitController;
 */
 
 Route::get('/', function () {
-    return view('layouts.index');
+    return redirect()->route("school.index");
 });
 Route::post('/auth', [LoginController::class, 'authenticate'])->name('auth');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -27,15 +28,22 @@ Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::group(['middleware' => ['auth']], function () {
 
     //Действия с балансом профиля
-    Route::group(['prefix' => '/balance/{profile}'], function(){
+    Route::group(['prefix' => '/balance/{profile}'], function () {
         Route::post('/update', [ProfileController::class, 'updateBalance']);
         Route::post('/new-ticket', [ProfileController::class, 'newTicket']);
     });
 
     //Действия с пользователями групп
-    Route::group(['prefix' => '/group/{group}'], function() {
+    Route::group(['prefix' => '/group/{group}'], function () {
         Route::post('/add-karateki-to-group', [GroupController::class, 'addKaratekiToGroup']);
         Route::post('/remove-from-group', [GroupController::class, 'removeFromGroup']);
+    });
+
+    Route::group(['prefix' => '/profile/{profile}/ticket/{ticket}'], function() {
+        Route::get('/resume-ticket', [TicketController::class, 'resumeTicket']);
+        Route::get('/pause-ticket', [TicketController::class, 'pauseTicket']);
+        Route::get('/close-ticket', [TicketController::class, 'closeTicket']);
+        Route::get('/open-ticket', [TicketController::class, 'openTicket']);
     });
 
     //Resource контроллеры: school, karateki, group, visit
@@ -43,9 +51,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('karateki', 'App\Http\Controllers\KaratekiController');
     Route::resource('visit', 'App\Http\Controllers\VisitController');
     Route::resource('profile/{profile}/ticket', 'App\Http\Controllers\TicketController');
-    Route::resource('school', 'App\Http\Controllers\SchoolController', ['names' => [
-        '/' => 'school.index'
-    ]]);
+    Route::resource('school', 'App\Http\Controllers\SchoolController');
 });
 
 /*
