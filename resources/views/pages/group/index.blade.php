@@ -29,11 +29,11 @@
                             </form>
                         </td>
                         <td class="text-muted">
-                            {{--                            <form action="/school/{{$item->id}}" method="POST">--}}
-                            {{--                                @csrf--}}
-                            {{--                                <input type="hidden" name="_method" value="DELETE">--}}
-                            {{--                                <button class="btn btn-danger">Удалить</button>--}}
-                            {{--                            </form>--}}
+{{--                            <form action="/school/{{$item->id}}" method="POST">--}}
+{{--                                @csrf--}}
+{{--                                <input type="hidden" name="_method" value="DELETE">--}}
+{{--                                <button class="btn btn-danger">Удалить</button>--}}
+{{--                            </form>--}}
                         </td>
                     @endauth
                 </tr>

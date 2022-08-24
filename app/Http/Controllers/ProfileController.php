@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profile;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -79,15 +80,15 @@ class ProfileController extends Controller
         //
     }
 
-    public function updateBalance(Request $request, Profile $profile)
+    public function addPaymentForTicket(Profile $profile)
     {
-        $profile->updateBalance($request->balance);
+        $profile->updateBalance(Setting::whereName('ticketAmount')->first()->value);
         return back();
     }
 
-    public function newTicket(Request $request, Profile $profile)
+    public function newTicket(Profile $profile)
     {
-        $profile->openNewTicket($request->balance);
+        $profile->openNewTicket(Setting::whereName('ticketAmount')->first()->value);
         return back();
     }
 }

@@ -2,30 +2,31 @@
 
 @section('content')
     <button class="btn btn-dark"><a href="/profile/{{$profile->id}}/ticket" class="text-decoration-none text-white">Вернуться</a></button>
-    <form class="table-responsive" action="/profile/{{$profile->id}}/ticket/{{$ticket->id}}" method="POST">
-        @csrf
-        <input type="hidden" name="_method" value="PUT">
-        <div class="col-xl-12 d-flex justify-content-center m-3" id="token" data-token="{{ csrf_token() }}">
+    <div class="table-responsive" >
+       <div class="col-xl-12 d-flex justify-content-center m-3" id="token" data-token="{{ csrf_token() }}">
             <h2>{{$profile->fullName}}</h2>
         </div>
         <h3 class="text-center">Абонемент №{{$ticket->id}} @if($ticket->is_closed === 1)
                 <span class="text-danger">(закрыт)</span>
             @endif</h3>
-        <div class="d-flex justify-content-center">
+        <form class="d-flex justify-content-center align-items-center" action="/profile/{{$profile->id}}/ticket/{{$ticket->id}}" method="POST">
+            @csrf
+            <input type="hidden" name="_method" value="PUT">
             @if($ticket->paused === 0)
-                <p class="text-center text-primary">С {{date("d-m-Y", strtotime($ticket->created_at))}} </p>
-                <p class="text-center text-primary">&nbsp; по <input type="date" name="end_date" value="{{$ticket->end_date}}"></p>
+                <p class="text-center text-primary m-2">С {{date("d-m-Y", strtotime($ticket->created_at))}}</p>
+                <p class="text-center text-primary m-2">по <input type="date" name="end_date" value="{{$ticket->end_date}}"></p>
             @else
-                <p class="text-center text-danger"> Приостановлен с : {{$ticket->pause_date}}</p>
+                <p class="text-center text-danger m-2"> Приостановлен с : {{$ticket->pause_date}}</p>
             @endif
-        </div>
+                <button class="btn btn-success text-center m-2">Сохранить</button>
+        </form>
         <table
             class="table table-bordered">
             <thead>
             <tr class="bg-gray">
                 @foreach($ticket->visits as $visit)
                     <th class="col-1">
-                        {{$visit->date}}
+                        {{date("d-m-Y", strtotime($visit->date))}}
                     </th>
                 @endforeach
             </tr>
@@ -60,7 +61,6 @@
                                 Удалить
                             </button>
                         </form>
-
                     </td>
                 @endforeach
             </tr>
@@ -68,7 +68,7 @@
         </table>
         <div class="d-flex justify-content-center mb-4">
             @if($ticket->is_closed !== 1)
-                <button class="btn btn-success text-center mt-2 me-2">Сохранить</button>
+
                 <button class="btn btn-danger text-center mt-2 me-2">
                     <a href="/profile/{{$profile->id}}/ticket/{{$ticket->id}}/close-ticket" class="text-decoration-none text-white">
                         Закрыть абонемент
@@ -95,7 +95,7 @@
                 </button>
             @endif
         </div>
-    </form>
+    </div>
     @if($ticket->is_closed !== 1)
     <form class="d-flex justify-content-center mt-2 mb-2" action="/visit" method="POST">
         @csrf

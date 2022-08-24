@@ -24,7 +24,7 @@
                     <tr class="bg-gray">
                         @foreach($ticket->visits as $visit)
                             <th class="col-1">
-                                {{$visit->date}}
+                                {{date("d-m-Y", strtotime($visit->date))}}
                             </th>
                         @endforeach
                     </tr>

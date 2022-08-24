@@ -11,7 +11,7 @@ class KaratekiController extends Controller
 {
     public function index()
     {
-        return view('pages.karateki.index', ['karateki' => Profile::karateki()->orderBy('surname')->orderBy('name')->get()]);
+        return view('pages.karateki.index', ['karateki' => Profile::karateki()->get()]);
     }
 
     public function create()
