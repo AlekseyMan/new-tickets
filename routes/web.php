@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => '/balance/{profile}'], function () {
         Route::get('/addPaymentForTicket', [ProfileController::class, 'addPaymentForTicket']);
         Route::get('/new-ticket', [ProfileController::class, 'newTicket']);
+        Route::post('/update-balance', [ProfileController::class, 'updateBalance']);
     });
 
     //Действия с пользователями групп

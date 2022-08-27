@@ -5,6 +5,26 @@
         <div class="col-xl-12 d-flex justify-content-center m-3" id="token" data-token="{{ csrf_token() }}">
             <h2>{{$profile->fullName}}</h2>
         </div>
+        <div class="col-xl-12 d-flex justify-content-center m-3" id="shown-balance">
+            <h4 class="m-2">Баланс: {{$profile->balance}}</h4>
+            <button class="btn btn-dark" id="shown-balance-button">Изменить</button>
+        </div>
+        <form action="/balance/{{$profile->id}}/update-balance" method="POST" id="edit-balance"
+              class="col-xl-12 d-flex justify-content-center m-3 d-none">
+            @csrf
+            <h4 class="m-2">Баланс: <input type="number" name="amount" value="{{$profile->balance}}"></h4>
+            <button class="btn btn-dark" id="edit-balance-button">Сохранить</button>
+        </form>
+        <script>
+            document.getElementById('shown-balance-button').addEventListener('click',()=>{
+                document.getElementById('shown-balance').classList.add('d-none')
+                document.getElementById('edit-balance').classList.remove('d-none')
+            })
+            document.getElementById('edit-balance-button').addEventListener('click',()=>{
+                document.getElementById('edit-balance').classList.add('d-none')
+                document.getElementById('shown-balance').classList.remove('d-none')
+            })
+        </script>
         @foreach($profile->tickets as $ticket)
             @isset($ticket->visits)
                 <h3 class="text-center">Абонемент №{{$ticket->id}} @if($ticket->is_closed === 1)

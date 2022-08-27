@@ -91,4 +91,10 @@ class ProfileController extends Controller
         $profile->openNewTicket(Setting::whereName('ticketAmount')->first()->value);
         return back();
     }
+
+    public function updateBalance(Request $request, Profile $profile)
+    {
+        $profile->updateBalance($request->amount);
+        return back();
+    }
 }

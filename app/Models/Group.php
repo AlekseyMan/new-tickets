@@ -28,7 +28,9 @@ class Group extends Model
 
     public function karateki(): BelongsToMany
     {
-        return $this->belongsToMany(Profile::class, 'groups_profiles');
+        return $this->belongsToMany(Profile::class, 'groups_profiles')
+            ->orderBy('surname')
+            ->orderBy('name');
     }
 
     public function getFormatedScheduleAttribute()
