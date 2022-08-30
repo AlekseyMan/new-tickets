@@ -44,6 +44,16 @@ class Ticket extends Model
         return Visit::where('ticket_id', $this->id)->visited()->count();
     }
 
+    public function getVisitAttribute()
+    {
+        return Visit::where('ticket_id', $this->id)->where('date', today())->where('visited', 1)->first();
+    }
+
+    public function getMissAttribute()
+    {
+        return Visit::where('ticket_id', $this->id)->where('date', today())->where('visited', 0)->first();
+    }
+
     public function resume()
     {
         $unusedDays = strtotime($this->end_date) - strtotime($this->pause_date);
@@ -74,15 +84,5 @@ class Ticket extends Model
         $this->update([
             'is_closed'     => false
         ]);
-    }
-
-    public function getVisitAttribute()
-    {
-        return Visit::where('ticket_id', $this->id)->where('date', today())->where('visited', 1)->first();
-    }
-
-    public function getMissAttribute()
-    {
-        return Visit::where('ticket_id', $this->id)->where('date', today())->where('visited', 0)->first();
     }
 }

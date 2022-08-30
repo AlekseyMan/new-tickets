@@ -32,7 +32,7 @@ class Visit extends Model
             $ticket->isClosed();
             return back();
         } else {
-            $data['coach_id'] = Auth::id();
+            $data['coach_id'] = Profile::where('user_id', Auth::id())->first()->id;
             $data['date'] = today()->format("Y-m-d");
             $this->updateOrCreate(
                 [

@@ -65,7 +65,7 @@ class Profile extends Model
 
     public function scopeCoaches($query)
     {
-        return $query->where('profile_role', self::ROLE_COACH);
+        return $query->where('profile_role', self::ROLE_COACH)->orderBy('surname')->orderBy('name');
     }
 
     //Attributes
