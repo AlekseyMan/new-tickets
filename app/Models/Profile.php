@@ -71,7 +71,7 @@ class Profile extends Model
     //Attributes
     public function getTicketAttribute()
     {
-        return Ticket::where('profile_id', $this->id)->latest('id')->first();
+        return Ticket::where('profile_id', $this->id)->where('is_closed', 0)->latest('id')->first();
     }
 
     public function getTicketsAttribute()
