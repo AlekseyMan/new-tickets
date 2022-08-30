@@ -2,43 +2,40 @@
 
 @section('content')
     <div class="d-flex justify-content-center">
-        <form action="/karateki" method="POST" class="card col-8">
+        <form action="/coaches" method="POST" class="card col-8">
             @csrf
             <div class="card-header">
-                <h3 class="">Добавить ученика</h3>
+                <h3 class="">Добавить тренера</h3>
             </div>
             <input type="hidden" name="profile_role" value="{{$role}}">
             <div class="card-body">
-                <label for="surname"><b>Введите фамилию</b><span class="text-danger"> *</span></label>
-                <input type="text" class="form-control mb-3" name="surname" placeholder="Введите фамилию" autocomplete="off" required>
+                <div class="d-flex">
+                    <div class="col-6">
+                        <label for="surname"><b>Введите фамилию</b><span class="text-danger"> *</span></label>
+                        <input type="text" class="form-control mb-3" name="surname" placeholder="Введите фамилию" autocomplete="off" required>
 
-                <label for="name"><b>Введите имя</b><span class="text-danger"> *</span></label>
-                <input type="text" class="form-control mb-3" name="name" placeholder="Введите имя" autocomplete="off" required>
+                        <label for="name"><b>Введите имя</b><span class="text-danger"> *</span></label>
+                        <input type="text" class="form-control mb-3" name="name" placeholder="Введите имя" autocomplete="off" required>
 
-                <label for="name"><b>Выбрать команду</b></label>
-                <select name="team_id" class="form-select">
-                    <option value="">-</option>
-                    @foreach($teams as $team)
-                        <option value="{{$team->id}}">
-                            {{$team->name ?? $team->team_number}}
-                        </option>
-                    @endforeach
-                </select>
-                <label class="mt-3" for="coach_id">
-                    <b>Выберите тренера</b><span class="text-danger"> *</span>
-                </label>
-                <select name="coach_id" class="form-select">
-                    @foreach($coaches as $coach)
-                        <option value="{{$coach->id}}" @if(\Illuminate\Support\Facades\Auth::id() == $coach->id) selected @endif>
-                            {{$coach->fullName}}
-                        </option>
-                    @endforeach
-                </select>
+                        <label for="patronymic"><b>Введите отчество</b><span class="text-danger"> *</span></label>
+                        <input type="text" class="form-control mb-3" name="patronymic" placeholder="Введите отчество" autocomplete="off" required>
+                    </div>
+                    <div class="col-5 ms-3">
+                        <label for="email"><b>Введите email</b><span class="text-danger"> *</span></label>
+                        <input type="text" class="form-control mb-3" name="email" placeholder="Введите email" autocomplete="off" required>
+
+                        <label for="password"><b>Введите пароль</b><span class="text-danger"> *</span></label>
+                        <input type="password" class="form-control mb-3" name="password" placeholder="Введите пароль" autocomplete="off" required>
+
+                        <label for="repeat_password"><b>Подтвердите пароль</b><span class="text-danger"> *</span></label>
+                        <input type="password" class="form-control mb-3" name="repeat_password" placeholder="Подтвердите пароль" autocomplete="off" required>
+                    </div>
+                </div>
+
                 <div>
                     <div class="form-select mt-2 cursor-pointer" onclick="hideShowAdvancedBlock()"><b>Дополнительные параметры</b></div>
                     <div class="form-control d-none" id="advanced-block">
-                        <label for="patronymic">Введите отчество</label>
-                        <input type="text" class="form-control mb-3" name="patronymic" placeholder="Введите отчество" autocomplete="off">
+
                         <label for="birthday">Дата рождения</label>
                         <input type="date" value="{{old('birthday')}}" name="birthday" class="form-control mb-2">
                         <label for="weight">Вес</label>

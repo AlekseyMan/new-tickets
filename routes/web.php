@@ -50,6 +50,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     //Resource контроллеры: school, karateki, group, visit
     Route::resource('group', 'App\Http\Controllers\GroupController');
+    Route::resource('coaches', 'App\Http\Controllers\CoachesController');
     Route::resource('karateki', 'App\Http\Controllers\KaratekiController');
     Route::resource('visit', 'App\Http\Controllers\VisitController');
     Route::resource('profile/{profile}/ticket', 'App\Http\Controllers\TicketController');

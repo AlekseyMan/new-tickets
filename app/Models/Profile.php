@@ -49,7 +49,8 @@ class Profile extends Model
         'coach_id',
         'profile_role',
         'balance',
-        'team_id'
+        'team_id',
+        'user_id'
     ];
 
     public function user(): HasOne
