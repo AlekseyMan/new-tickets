@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profile;
+use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Redirect;
@@ -18,7 +19,8 @@ class KaratekiController extends Controller
     {
         return view('pages.karateki.create', [
             'coaches' => Profile::coaches()->get(),
-            'role'    => Profile::ROLE_KARATEKA
+            'role'    => Profile::ROLE_KARATEKA,
+            'teams'    => Team::all()->toArray() ?? []
         ]);
     }
 
@@ -36,8 +38,11 @@ class KaratekiController extends Controller
     public function edit($id)
     {
         return view('pages.karateki.edit', [
-            'coaches' => Profile::coaches()->get(),
-            'profile'  => Profile::find($id)
+            'coaches'  => Profile::coaches()->get(),
+            'profile'  => Profile::find($id),
+            'qus'      => Profile::QU,
+            'dans'     => Profile::DAN,
+            'teams'    => Team::all()->toArray() ?? []
         ]);
     }
 
@@ -49,6 +54,6 @@ class KaratekiController extends Controller
 
     public function destroy($id)
     {
-        //
+
     }
 }

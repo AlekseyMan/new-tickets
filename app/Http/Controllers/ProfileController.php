@@ -69,15 +69,10 @@ class ProfileController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Profile  $profile
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Profile $profile)
     {
-        //
+        $profile->delete();
+        return redirect()->route('karateki.index');
     }
 
     public function addPaymentForTicket(Profile $profile)

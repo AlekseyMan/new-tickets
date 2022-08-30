@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/addPaymentForTicket', [ProfileController::class, 'addPaymentForTicket']);
         Route::get('/new-ticket', [ProfileController::class, 'newTicket']);
         Route::post('/update-balance', [ProfileController::class, 'updateBalance']);
+        Route::get('/delete-profile', [ProfileController::class, 'destroy']);
     });
 
     //Действия с пользователями групп

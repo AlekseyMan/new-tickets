@@ -14,6 +14,29 @@ class Profile extends Model
     CONST ROLE_KARATEKA = "karateka";
     CONST ROLE_PARENT = "parent";
     CONST ROLE_COACH = "coach";
+    CONST QU = [
+        '10',
+        '9',
+        '8',
+        '7',
+        '6',
+        '5',
+        '4',
+        '3',
+        '2',
+        '1',
+    ];
+    CONST DAN = [
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+    ];
 
     protected $fillable = [
         'name',
@@ -25,9 +48,16 @@ class Profile extends Model
         'weight',
         'coach_id',
         'profile_role',
-        'balance'
+        'balance',
+        'team_id'
     ];
 
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    //Scopes
     public function scopeKarateki($query)
     {
         return $query->where('profile_role', self::ROLE_KARATEKA)->orderBy('surname')->orderBy('name');
@@ -38,11 +68,7 @@ class Profile extends Model
         return $query->where('profile_role', self::ROLE_COACH);
     }
 
-    public function user(): HasOne
-    {
-        return $this->hasOne(User::class, 'id', 'user_id');
-    }
-
+    //Attributes
     public function getTicketAttribute()
     {
         return Ticket::where('profile_id', $this->id)->latest('id')->first();
@@ -58,6 +84,7 @@ class Profile extends Model
         return $this->surname . " " . $this->name . " " . $this->patronymic;
     }
 
+    //Methods
     public function updateBalance(int $value)
     {
         $newBalance = (int)$this->balance + $value;

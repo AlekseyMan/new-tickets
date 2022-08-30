@@ -15,12 +15,21 @@
                 <label for="name"><b>Введите имя</b><span class="text-danger"> *</span></label>
                 <input type="text" class="form-control mb-3" name="name" placeholder="Введите имя" autocomplete="off" required>
 
+                <label for="name"><b>Выбрать команду</b></label>
+                <select name="team_id" class="form-select">
+                    <option value="">-</option>
+                    @foreach($teams as $team)
+                        <option value="{{$team->id}}">
+                            {{$team->name ?? $team->team_number}}
+                        </option>
+                    @endforeach
+                </select>
                 <label class="mt-3" for="coach_id">
                     <b>Выберите тренера</b><span class="text-danger"> *</span>
                 </label>
                 <select name="coach_id" class="form-select">
                     @foreach($coaches as $coach)
-                        <option value="{{$coach->id}}">
+                        <option value="{{$coach->id}}" @if(\Illuminate\Support\Facades\Auth::id() == $coach->id) selected @endif>
                             {{$coach->fullName}}
                         </option>
                     @endforeach
@@ -37,13 +46,6 @@
 {{--                        <label for="contacts[phone]">Телефон</label>--}}
 {{--                        <input type="tel" value="{{old('contacts[phone]')}}" name="contacts[phone]" class="form-control" placeholder="+7 ___-___-__-__">--}}
                         <label for="qu">Кю</label>
-                        <select name="qu" id="qu" class="form-select col-2">
-                            <option value="">-</option>
-                        </select>
-                        <label for="dan">Дан</label>
-                        <select name="dan" id="dan" class="form-select col-2">
-                            <option value="">-</option>
-                        </select>
                     </div>
                 </div>
             </div>
