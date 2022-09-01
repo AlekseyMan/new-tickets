@@ -7,6 +7,14 @@
                 <a href="/karateki/create" class="text-decoration-none text-white">Добавить спортсмена</a>
             </button>
         </div>
+        <div>
+            <button class="btn btn-info" id="filter">
+                Фильтр
+            </button>
+            <div class="d-none" id="search-block">
+
+            </div>
+        </div>
         <table class="table table-vcenter">
             <thead>
             <tr>
