@@ -12,7 +12,7 @@
             <tr>
                 <th class="col-3 text-center">Фамилия Имя</th>
                 <th class="col-2 text-center">Дата рождения</th>
-                <th class="col-1 text-center">Кю</th>
+                <th class="col-1 text-center">Кю/Дан</th>
                 <th class="col-1 text-center">Вес</th>
                 <th class="col-1">Редактировать</th>
             </tr>
@@ -25,7 +25,7 @@
                             {{$coach->fullName}}
                         </td>
                         <td>{{$coach->birthday}}</td>
-                        <td>{{$coach->dan ?? $coach->qu}}</td>
+                        <td>{{ $coach->dan ? $coach->dan . "дан" : $coach->qu . "кю"}}</td>
                         <td>{{$coach->weight}}</td>
                         <td class="text-muted">
                             <form action="/coaches/{{$coach->id}}/edit" method="GET">
