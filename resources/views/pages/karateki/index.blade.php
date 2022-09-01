@@ -3,18 +3,49 @@
 @section('content')
     <div class="table-responsive">
         <div class="col-xl-12 d-flex justify-content-center m-3" id="token" data-token="{{ csrf_token() }}">
-            <button type="button" class="btn btn-success">
-                <a href="/karateki/create" class="text-decoration-none text-white">Добавить спортсмена</a>
-            </button>
+            <a href="/karateki/create" class="text-decoration-none text-white">
+                <button type="button" class="btn btn-success">
+                    Добавить спортсмена
+                </button>
+            </a>
+            <a href="/teams" class="text-decoration-none text-white">
+                <button type="button" class="btn btn-primary ms-3">
+                    Распределить по командам
+                </button>
+            </a>
         </div>
-        <div>
-            <button class="btn btn-info" id="filter">
-                Фильтр
-            </button>
-            <div class="d-none" id="search-block">
-
+        <button class="btn btn-info" id="filter">
+            Фильтр
+        </button>
+        <form method="GET" action="/karateki">
+            <div class="d-none d-flex justify-content-start mt-3 mb-3 border-top border-bottom" id="search-block">
+                <div class="d-flex flex-column align-items-center justify-content-center">
+                    <button class="btn btn-success m-2">Применить фильтр</button>
+                    <a href="/karateki" class="text-white text-decoration-none">
+                        <div class="btn btn-primary m-2">
+                            Сбросить фильтр
+                        </div>
+                    </a>
+                </div>
+                <div class="col-3 border-start ps-2 ms-2">
+                    <h4>Выбор по тренеру</h4>
+                    <select name="coach_id" id="coaches" class="form-select mb-2">
+                        @foreach($coaches as $coach)
+                            <option value="{{$coach->id}}">{{$coach->fullName}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-3 border-start ps-2 ms-2">
+                    <h4>Выбор по командам</h4>
+                    <select name="team_id" id="coaches" class="form-select mb-2">
+                        <option value="">-</option>
+                        @foreach($teams as $team)
+                            <option value="{{$team->id}}">{{$team->name ?? $team->number}}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-        </div>
+        </form>
         <table class="table table-vcenter">
             <thead>
             <tr>
@@ -52,4 +83,13 @@
             </tbody>
         </table>
     </div>
+    <script>
+        document.getElementById('filter').addEventListener('click', () => {
+            if (document.getElementById('search-block').className.includes('d-none')) {
+                document.getElementById('search-block').classList.remove('d-none')
+            } else {
+                document.getElementById('search-block').classList.add('d-none')
+            }
+        })
+    </script>
 @endsection

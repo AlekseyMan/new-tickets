@@ -61,12 +61,27 @@ class Profile extends Model
     //Scopes
     public function scopeKarateki($query)
     {
-        return $query->where('profile_role', self::ROLE_KARATEKA)->orderBy('surname')->orderBy('name');
+        return $query->where('profile_role', self::ROLE_KARATEKA)->search()->orderBy('surname')->orderBy('name');
     }
 
     public function scopeCoaches($query)
     {
         return $query->where('profile_role', self::ROLE_COACH)->orderBy('surname')->orderBy('name');
+    }
+
+    public function scopeSearch($query)
+    {
+        $search = request()->query();
+        if(!empty($search)){
+            foreach($search as $key => $value){
+            	if(!empty($value)) {
+                   $query->when($key, function ($q) use ($key, $value){
+                       $q->where($key, 'LIKE', "%$value%");
+                   });
+               }
+            }
+        }
+        return $query;
     }
 
     //Attributes

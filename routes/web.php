@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/remove-from-group', [GroupController::class, 'removeFromGroup']);
     });
 
+    //Действия с абонементамим
     Route::group(['prefix' => '/profile/{profile}/ticket/{ticket}'], function() {
         Route::get('/resume-ticket', [TicketController::class, 'resumeTicket']);
         Route::get('/pause-ticket', [TicketController::class, 'pauseTicket']);
@@ -56,6 +57,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('profile/{profile}/ticket', 'App\Http\Controllers\TicketController');
     Route::resource('school', 'App\Http\Controllers\SchoolController');
 });
+//
+Route::resource('teams', 'App\Http\Controllers\TeamsController');
 
 /*
 GET	/photo	index	photo.index

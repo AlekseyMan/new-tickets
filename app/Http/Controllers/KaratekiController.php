@@ -12,7 +12,11 @@ class KaratekiController extends Controller
 {
     public function index()
     {
-        return view('pages.karateki.index', ['karateki' => Profile::karateki()->get()]);
+        return view('pages.karateki.index', [
+            'karateki' => Profile::karateki()->get(),
+            'coaches'  => Profile::coaches()->get(),
+            'teams'     => Team::all()
+        ]);
     }
 
     public function create()
