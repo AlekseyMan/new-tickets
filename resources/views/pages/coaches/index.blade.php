@@ -25,7 +25,7 @@
                             {{$coach->fullName}}
                         </td>
                         <td>{{$coach->birthday}}</td>
-                        <td>{{ $coach->dan ? $coach->dan . "дан" : $coach->qu . "кю"}}</td>
+                        <td>{{ $coach->dan ? $coach->dan . " дан" : $coach->qu . " кю"}}</td>
                         <td>{{$coach->weight}}</td>
                         <td class="text-muted">
                             <form action="/coaches/{{$coach->id}}/edit" method="GET">
