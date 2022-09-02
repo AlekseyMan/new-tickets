@@ -18,7 +18,7 @@ class Team extends Model
 
     public function karateki(): HasMany
     {
-        return $this->hasMany(Profile::class, 'team_id', 'id');
+        return $this->hasMany(Profile::class, 'team_id', 'id')->orderBy('surname')->orderBy('name');
     }
 
     public function updateTeams(array $teams)
