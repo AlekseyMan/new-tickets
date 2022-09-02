@@ -61,7 +61,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('school', 'App\Http\Controllers\SchoolController');
     Route::resource('teams', 'App\Http\Controllers\TeamsController');
 });
-//Route::get('/teams-list', [TeamsController::class, 'list']);
+Route::get('/teams-list', [TeamsController::class, 'teamsList']);
 
 /*
 GET	/photo	index	photo.index

@@ -63,4 +63,12 @@ class TeamsController extends Controller
         $team->updateTeams($request->teams);
         return back();
     }
+
+    public function teamsList()
+    {
+        return view('pages.teams.list', [
+            'teams' => Team::all(),
+            'coaches' => Profile::coaches()->get()
+        ]);
+    }
 }

@@ -8,6 +8,11 @@
                     Настроить команды
                 </button>
             </a>
+            <a href="/teams-list" class="text-decoration-none text-white">
+                <button type="button" class="btn btn-primary ms-3">
+                    Список
+                </button>
+            </a>
         </div>
         <button class="btn btn-info" id="filter">
             Фильтр

@@ -27,4 +27,9 @@ class Team extends Model
             Profile::whereIn('id', array_keys($members))->update(['team_id' => $teamId]);
         }
     }
+
+    public function getTeamMembersAttribute()
+    {
+        return $this->karateki;
+    }
 }
