@@ -24,7 +24,7 @@ class KaratekiController extends Controller
         return view('pages.karateki.create', [
             'coaches' => Profile::coaches()->get(),
             'role'    => Profile::ROLE_KARATEKA,
-            'teams'    => Team::all()->toArray() ?? []
+            'teams'    => Team::all()
         ]);
     }
 
