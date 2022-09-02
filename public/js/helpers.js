@@ -140,3 +140,26 @@ async function newKarateka() {
     document.getElementById('name').value = ''
     document.getElementById('surname').value = ''
 }
+
+function teamEdit(id) {
+    document.getElementById("input-number-" + id).classList.remove("d-none")
+    document.getElementById("input-name-" + id).classList.remove("d-none")
+    document.getElementById("button-save-" + id).classList.remove("d-none")
+    document.getElementById("button-cancel-" + id).classList.remove("d-none")
+    document.getElementById("text-number-" + id).classList.add("d-none")
+    document.getElementById("text-name-" + id).classList.add("d-none")
+    document.getElementById("button-edit-" + id).classList.add("d-none")
+
+    document.getElementById("button-cancel-" + id).addEventListener('click', () => {
+        document.getElementById("input-number-" + id).classList.add("d-none")
+        document.getElementById("input-name-" + id).classList.add("d-none")
+        document.getElementById("button-save-" + id).classList.add("d-none")
+        document.getElementById("button-cancel-" + id).classList.add("d-none")
+        document.getElementById("text-number-" + id).classList.remove("d-none")
+        document.getElementById("text-name-" + id).classList.remove("d-none")
+        document.getElementById("button-edit-" + id).classList.remove("d-none")
+
+        document.getElementById("button-cancel-" + id).removeEventListener('click', () => {})
+    })
+    console.log(id)
+}

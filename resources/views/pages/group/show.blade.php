@@ -28,9 +28,9 @@
             @foreach($group->karateki as $user)
                 <tr class="text-center @if((int)$user->balance < 0) bg-danger @endif" id="trUserId={{$user->id}}">
                     <td>
-                        <button type="button" class="btn-danger" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-close" data-bs-toggle="modal"
                                 data-bs-target="#removeFromGroup"
-                                onclick="addDataToModal('{{$user->id}}', 'remove')">X
+                                onclick="addDataToModal('{{$user->id}}', 'remove')">
                         </button>
                     </td>
                     <td class="" id="userNameId={{$user->id}}">

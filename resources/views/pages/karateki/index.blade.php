@@ -18,7 +18,7 @@
             Фильтр
         </button>
         <form method="GET" action="/karateki">
-            <div class="d-none d-flex justify-content-start mt-3 mb-3 border-top border-bottom" id="search-block">
+            <div class="@if(empty($_GET)) d-none @endif d-flex justify-content-start mt-3 mb-3 border-top border-bottom" id="search-block">
                 <div class="d-flex flex-column align-items-center justify-content-center">
                     <button class="btn btn-success m-2">Применить фильтр</button>
                     <a href="/karateki" class="text-white text-decoration-none">

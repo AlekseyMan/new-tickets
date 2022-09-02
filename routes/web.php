@@ -6,6 +6,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VisitController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\TeamsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 
 Route::group(['middleware' => ['auth']], function () {
+
+    Route::post('/teams/update-teams', [TeamsController::class, 'updateKaratekiTeams']);
 
     //Действия с балансом профиля
     Route::group(['prefix' => '/balance/{profile}'], function () {
@@ -56,9 +59,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('visit', 'App\Http\Controllers\VisitController');
     Route::resource('profile/{profile}/ticket', 'App\Http\Controllers\TicketController');
     Route::resource('school', 'App\Http\Controllers\SchoolController');
+    Route::resource('teams', 'App\Http\Controllers\TeamsController');
 });
-//
-Route::resource('teams', 'App\Http\Controllers\TeamsController');
+//Route::get('/teams-list', [TeamsController::class, 'list']);
 
 /*
 GET	/photo	index	photo.index
