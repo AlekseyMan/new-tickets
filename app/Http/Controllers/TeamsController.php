@@ -67,7 +67,7 @@ class TeamsController extends Controller
     public function teamsList()
     {
         return view('pages.teams.list', [
-            'teams' => Team::all(),
+            'teams' => Team::orderBy("name")->get(),
             'coaches' => Profile::coaches()->get()
         ]);
     }
