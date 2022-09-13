@@ -9,17 +9,29 @@
         <h3 class="text-center">Абонемент №{{$ticket->id}} @if($ticket->is_closed === 1)
                 <span class="text-danger">(закрыт)</span>
             @endif</h3>
-        <form class="d-flex justify-content-center align-items-center" action="/profile/{{$profile->id}}/ticket/{{$ticket->id}}" method="POST">
+
+        <div class="d-flex justify-content-center align-items-center" id="show-block">
+            <p class="text-center text-primary m-2">С {{date("d-m-Y", strtotime($ticket->created_at))}}</p>
+            <p class="text-center text-primary m-2">по {{date("d-m-Y", strtotime($ticket->end_date))}}</p>
+            <button class="btn btn-dark text-center m-2" onclick="editTheDate()">Изменить</button>
+        </div>
+        <form class="d-flex justify-content-center align-items-center d-none" id="edit-block" action="/profile/{{$profile->id}}/ticket/{{$ticket->id}}" method="POST">
             @csrf
             <input type="hidden" name="_method" value="PUT">
             @if($ticket->paused === 0)
-                <p class="text-center text-primary m-2">С {{date("d-m-Y", strtotime($ticket->created_at))}}</p>
+                <p class="text-center text-primary m-2">С <input type="date" name="created_at" value="{{date("Y-m-d", strtotime($ticket->created_at))}}"></p>
                 <p class="text-center text-primary m-2">по <input type="date" name="end_date" value="{{$ticket->end_date}}"></p>
             @else
                 <p class="text-center text-danger m-2"> Приостановлен с : {{$ticket->pause_date}}</p>
             @endif
                 <button class="btn btn-success text-center m-2">Сохранить</button>
         </form>
+        <script>
+            function editTheDate(){
+                document.getElementById('show-block').classList.add('d-none')
+                document.getElementById('edit-block').classList.remove('d-none')
+            }
+        </script>
         <table
             class="table table-bordered">
             <thead>

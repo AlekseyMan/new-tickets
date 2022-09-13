@@ -40,7 +40,7 @@ class TicketController extends Controller
 
     public function update(Request $request, Profile $profile, Ticket $ticket)
     {
-        $ticket->update(['end_date' => $request->end_date]);
+        $ticket->update(['end_date' => $request->end_date, 'created_at' => $request->created_at]);
         return back();
     }
 

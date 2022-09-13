@@ -17,12 +17,18 @@ class Ticket extends Model
         'end_date',
         'is_closed',
         'paused',
-        'pause_date'
+        'pause_date',
+        'created_at'
     ];
 
     public function visits(): HasMany
     {
         return $this->hasMany(Visit::class, 'ticket_id', 'id')->orderBy('date');
+    }
+
+    public function visitsWithoutMisses(): HasMany
+    {
+        return $this->hasMany(Visit::class, 'ticket_id', 'id')->whereVisited('1')->orderBy('date');
     }
 
     public function profile(): BelongsTo
@@ -32,7 +38,7 @@ class Ticket extends Model
 
     public function isClosed(): bool
     {
-        if(count($this->visits) >= Setting::whereName('visitsNumber')->first()->value OR $this->end_date < today()) {
+        if(count($this->visitsWithoutMisses) >= Setting::whereName('visitsNumber')->first()->value OR $this->end_date < today()) {
             $this->update(['is_closed' => 1]);
             return 1;
         };

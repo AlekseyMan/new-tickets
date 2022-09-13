@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Profile;
 use App\Models\Team;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 
 class TeamsController extends Controller
