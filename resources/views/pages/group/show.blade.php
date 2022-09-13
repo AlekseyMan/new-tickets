@@ -67,7 +67,8 @@
                         <b id="userId={{$user->id}}">{{$user->balance ?? 0}}</b>
                         @if($user->balance < 0)
                             <button type="button" class="btn btn-light ms-2">
-                                <a href="/balance/{{$user->id}}/addPaymentForTicket" class="text-decoration-none text-black">
+                                <a href="/balance/{{$user->id}}/addPaymentForTicket"
+                                   class="text-decoration-none text-black">
                                     Оплатить
                                 </a>
                             </button>
@@ -83,11 +84,11 @@
                     </td>
                     <td>@if(isset($user->ticket->is_closed) AND $user->ticket->is_closed == 0)
                         @else
-                            <button class="btn btn-primary">
-                                <a href="/balance/{{$user->id}}/new-ticket" class="text-decoration-none text-white">
+                            <a href="/balance/{{$user->id}}/new-ticket" class="text-decoration-none text-white">
+                                <button class="btn btn-primary">
                                     +
-                                </a>
-                            </button>
+                                </button>
+                            </a>
                         @endisset
                     </td>
                 </tr>
