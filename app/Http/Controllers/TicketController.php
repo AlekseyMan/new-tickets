@@ -44,9 +44,10 @@ class TicketController extends Controller
         return back();
     }
 
-    public function destroy(Ticket $ticket)
+    public function destroy(Request $request, Profile $profile, Ticket $ticket)
     {
-        //
+        $ticket->delete();
+        return redirect("/profile/".$profile->id."/ticket");
     }
 
     public function resumeTicket(Profile $profile, Ticket $ticket)

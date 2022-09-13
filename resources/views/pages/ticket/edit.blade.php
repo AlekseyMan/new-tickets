@@ -106,6 +106,7 @@
                     </a>
                 </button>
             @endif
+                <div class="btn btn-dark text-center mt-2 me-2" id="delete-abonement">Удалить абонемент</div>
         </div>
     </div>
     @if($ticket->is_closed !== 1)
@@ -118,4 +119,16 @@
         <button class="btn btn-primary">Добавить посещение</button>
     </form>
     @endif
+    <form action="/profile/{{$profile->id}}/ticket/{{$ticket->id}}" method="POST" class="d-none">
+        @csrf
+        <input type="hidden" name="_method" value="DELETE">
+        <button id="del-btn">Del</button>
+    </form>
+    <script>
+        document.getElementById("delete-abonement").addEventListener('click', () => {
+            if(confirm("Вы действтительно хотите удалить абонемент?")){
+                document.getElementById("del-btn").click()
+            }
+        })
+    </script>
 @endsection
