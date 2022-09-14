@@ -22,7 +22,7 @@
                 <tr class="">
                     <td>
                         <form action="/group/{{$group->id}}">
-                            <button class="btn btn-success">{{$group->name}}</button>
+                            <button class="btn btn-success">{{$group->name}}</button> ({{count($group->karateki)}})
                         </form>
                     </td>
                     <td>

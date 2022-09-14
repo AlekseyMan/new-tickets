@@ -10,10 +10,13 @@
             <button class="btn btn-dark" id="shown-balance-button">Изменить</button>
         </div>
         <form action="/balance/{{$profile->id}}/update-balance" method="POST" id="edit-balance"
-              class="col-xl-12 d-flex justify-content-center m-3 d-none">
+              class="col-xl-12 text-center m-3 d-none">
             @csrf
-            <h4 class="m-2">Баланс: <input type="number" name="amount" value="{{$profile->balance}}"></h4>
-            <button class="btn btn-dark" id="edit-balance-button">Сохранить</button>
+            <h4 class="m-2">Текущий баланс: {{$profile->balance}}</h4><br>
+            <div class="d-flex justify-content-center">
+                <h4 class="m-2">Добавить к балансу: <input type="number" name="amount" value=""></h4>
+                <button class="btn btn-dark" id="edit-balance-button">Сохранить</button>
+            </div>
         </form>
         <script>
             document.getElementById('shown-balance-button').addEventListener('click',()=>{
