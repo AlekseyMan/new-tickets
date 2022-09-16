@@ -11,7 +11,7 @@ class ProfileController extends Controller
 
     public function index()
     {
-
+        dd("Test complete");
     }
 
     /**

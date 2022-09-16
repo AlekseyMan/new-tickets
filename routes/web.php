@@ -19,6 +19,11 @@ use App\Http\Controllers\TeamsController;
 |
 */
 
+//TODO для реализации поддомена и переноса основного сайта сюда же
+//Route::group(['domain' => '{account}.localhost'], function () {
+//    Route::get('/', [ProfileController::class, 'index']);
+//});
+
 Route::get('/', function () {
     return redirect()->route("school.index");
 });
