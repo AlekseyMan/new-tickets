@@ -109,10 +109,10 @@ class Profile extends Model
 
     public function openNewTicket(int $value)
     {
-        Ticket::create([
+        $this->updateBalance(-$value);
+        return Ticket::create([
             'profile_id' => $this->id,
             'end_date'   => Carbon::now()->addMonth()->subDay()
         ]);
-        $this->updateBalance(-$value);
     }
 }

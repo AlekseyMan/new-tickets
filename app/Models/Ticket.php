@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Facades\Report;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -60,33 +61,39 @@ class Ticket extends Model
         return Visit::where('ticket_id', $this->id)->where('date', today())->where('visited', 0)->first();
     }
 
-    public function resume()
+    public function resume($userId)
     {
         $unusedDays = strtotime($this->end_date) - strtotime($this->pause_date);
-        $this->update([
+        $updateParams = [
             'end_date'   => Carbon::parse(strtotime(today()) + $unusedDays)->addDay()->format("Y-m-d"),
             'pause_date' => null,
             'paused'     => false
-        ]);
+        ];
+        Report::ticketReport($userId, 'Возобновление действия абаонемента', $this->id, $updateParams);
+        $this->update($updateParams);
     }
 
-    public function pause()
+    public function pause($userId)
     {
-        $this->update([
+        $updateParams = [
             'pause_date' => today(),
             'paused'     => true
-        ]);
+        ];
+        Report::ticketReport($userId, 'Абонемент поставлен на паузу', $this->id, $updateParams);
+        $this->update($updateParams);
     }
 
-    public function close()
+    public function close($userId)
     {
+        Report::ticketReport($userId, 'Абонемент закрыт', $this->id, ['is_closed'     => true]);
         $this->update([
             'is_closed'     => true
         ]);
     }
 
-    public function open()
+    public function open($userId)
     {
+        Report::ticketReport($userId, 'Абонемент открыт', $this->id, ['is_closed'     => false]);
         $this->update([
             'is_closed'     => false
         ]);

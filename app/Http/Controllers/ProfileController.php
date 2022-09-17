@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\Report;
 use App\Models\Profile;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -83,7 +85,8 @@ class ProfileController extends Controller
 
     public function newTicket(Profile $profile)
     {
-        $profile->openNewTicket(Setting::whereName('ticketAmount')->first()->value);
+        $ticket = $profile->openNewTicket(Setting::whereName('ticketAmount')->first()->value);
+        Report::ticketReport(Auth::id(), 'Открыт новый абонемент', $ticket->id);
         return back();
     }
 

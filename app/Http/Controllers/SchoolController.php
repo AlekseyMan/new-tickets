@@ -6,6 +6,7 @@ use App\Http\Requests\SchoolRequest;
 use App\Models\Profile;
 use App\Models\School;
 use Illuminate\View\View;
+use App\Facades\Report;
 
 class SchoolController extends Controller
 {
