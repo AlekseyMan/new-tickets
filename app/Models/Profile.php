@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Facades\Report;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Auth;
 
 class Profile extends Model
 {
@@ -106,6 +108,7 @@ class Profile extends Model
         if(!$this->isBlockedBalance()){
             $newBalance = (int)$this->balance + $value;
             $this->update(['balance' => $newBalance]);
+            Report::balanceReport(Auth::id(), $this, $value);
         }
     }
 
@@ -121,8 +124,8 @@ class Profile extends Model
     public function isBlockedBalance(): bool
     {
         if($this->updated_at < now()->addMinute(-1)){
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 }

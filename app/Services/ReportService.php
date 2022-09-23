@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Profile;
 use App\Models\Reports;
 use App\Models\Ticket;
 
@@ -41,6 +42,19 @@ class ReportService
         $reports = new Reports();
         $reports->type = 'ticket';
         $reports->model_id = $id;
+        $reports->user_id = $userId;
+        $reports->data = json_encode($reportData);
+        $reports->save();
+    }
+
+    public function balanceReport(int $userId, Profile $profile, int $amount)
+    {
+        $reportData['action'] = 'Изменение баланса';
+        $reportData['oldValues'] = $profile->balance - $amount;
+        $reportData['newValues'] = $profile->balance;
+        $reports = new Reports();
+        $reports->type = 'profile';
+        $reports->model_id = $profile->id;
         $reports->user_id = $userId;
         $reports->data = json_encode($reportData);
         $reports->save();
