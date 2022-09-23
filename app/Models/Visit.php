@@ -27,31 +27,25 @@ class Visit extends Model
     public function addVisitToTable($data)
     {
         $ticket = Ticket::find($data['ticket_id']);
-        $visitDone = 0;
-        if (!$ticket->isClosed()) {
-            if (isset($data['date'])) {
-                $this->create($data);
-                $ticket->isClosed();
-                return back();
-            } else {
-                $data['coach_id'] = Profile::where('user_id', Auth::id())->first()->id;
-                $data['date'] = today()->format("Y-m-d");
-                $this->updateOrCreate(
-                    [
-                        'date' => today()->format("Y-m-d"),
-                        'ticket_id' => $data['ticket_id']
-                    ],
-                    $data);
-            }
-            $visitDone = 1;
+        if (isset($data['date'])) {
+            $this->create($data);
+            $ticket->isClosed();
+            return back();
+        } else {
+            $data['coach_id'] = Profile::where('user_id', Auth::id())->first()->id;
+            $data['date'] = today()->format("Y-m-d");
+            $this->updateOrCreate(
+                [
+                    'date' => today()->format("Y-m-d"),
+                    'ticket_id' => $data['ticket_id']
+                ],
+                $data);
         }
         $ticket = Ticket::find($data['ticket_id']);
         return response()->json([
-            'is_closed'     => $ticket->isClosed(),
-            'userName'      => $ticket->profile->fullName,
-            'id'            => $ticket->profile->id,
+            'is_closed' => $ticket->isClosed(),
+            'userName' => $ticket->profile->fullName,
             'visits_number' => $ticket->visitsNumber,
-            'visitDone'     => $visitDone
         ]);
     }
 

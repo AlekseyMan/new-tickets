@@ -15,7 +15,7 @@ async function markVisit(event) {
         return alert("Необходимо завести/обновить абонемент")
     }
     let visited = 1
-    if(event.substr(0,4) == "miss"){
+    if (event.substr(0, 4) == "miss") {
         visited = 0
     }
 
@@ -33,28 +33,20 @@ async function markVisit(event) {
         }),
     });
     let res = await response.json()
-    if(res.visitDone === 1){
-        if (visited === 1) {
-            document.getElementById(event).className = "btn btn-success"
-            document.getElementById(event.replace('visit', 'miss')).className = "btn"
-            document.getElementById(event.replace('visit', 'count')).innerText = res.visits_number
-        } else {
-            document.getElementById(event).className = "btn btn-danger"
-            document.getElementById(event.replace('miss', 'visit')).className = "btn"
-            document.getElementById(event.replace('miss', 'count')).innerText = res.visits_number
-        }
-        if (res.is_closed == true) {
-            alert("У " + res.userName + " закончился абонемент.")
-            document.getElementById(event.replace(res.btnType, 'count')).classList.add("bg-danger")
-            document.getElementById("ticketDateid=" + res.userId).classList.add("bg-danger")
-            document.getElementById("ticketDateid=" + res.userId).innerText = "Абонемент закончился"
-        }
+    if (visited === 1) {
+        document.getElementById(event).className = "btn btn-success"
+        document.getElementById(event.replace('visit', 'miss')).className = "btn"
+        document.getElementById(event.replace('visit', 'count')).innerText = res.visits_number
     } else {
-        alert("У " + res.userName + " закончился абонемент. Необходимо завести новый, чтобы отметить посещение/пропуск.")
-        console.log(document.getElementById('ticketIsOpen' + res.id))
-        document.getElementById('ticketIsOpen' + res.id).classList.add('d-none')
-        document.getElementById('ticketIsClosed' + res.id).classList.remove('d-none')
-        document.getElementById('newTicket' + res.id).classList.remove('d-none')
+        document.getElementById(event).className = "btn btn-danger"
+        document.getElementById(event.replace('miss', 'visit')).className = "btn"
+        document.getElementById(event.replace('miss', 'count')).innerText = res.visits_number
+    }
+    if (res.is_closed == true) {
+        alert("У " + res.userName + " закончился абонемент.")
+        document.getElementById(event.replace(res.btnType, 'count')).classList.add("bg-danger")
+        document.getElementById("ticketDateid=" + res.userId).classList.add("bg-danger")
+        document.getElementById("ticketDateid=" + res.userId).innerText = "Абонемент закончился"
     }
 }
 
@@ -67,12 +59,12 @@ function addDataToModal(id, type) {
             document.getElementById('balance-input').value = ''
             obj = document.getElementById('addBalanceLabel')
             headerText = 'Добавить оплату для: ' + fio
-            document.getElementById('update-balance').action = "/balance/"+ id +"/update"
+            document.getElementById('update-balance').action = "/balance/" + id + "/update"
             break;
         case 'abonement':
             obj = document.getElementById('addAbonementLabel')
             headerText = 'Открыть новый абонемент для: ' + fio
-            document.getElementById('add-abonement').action = "/balance/"+ id +"/new-ticket"
+            document.getElementById('add-abonement').action = "/balance/" + id + "/new-ticket"
             break;
         case 'remove':
             obj = document.getElementById('removeFromGroupLabel')
@@ -166,7 +158,8 @@ function teamEdit(id) {
         document.getElementById("text-name-" + id).classList.remove("d-none")
         document.getElementById("button-edit-" + id).classList.remove("d-none")
 
-        document.getElementById("button-cancel-" + id).removeEventListener('click', () => {})
+        document.getElementById("button-cancel-" + id).removeEventListener('click', () => {
+        })
     })
     console.log(id)
 }

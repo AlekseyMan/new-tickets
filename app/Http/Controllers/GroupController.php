@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Setting;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
@@ -25,6 +27,15 @@ class GroupController extends Controller
 
     public function show(Group $group)
     {
+        //TODO check works of schedule and remove it if done
+        $availableVisitsNumber = Setting::whereName('visitsNumber')->first()->value;
+        foreach ($group->karateki as $profile) {
+            if(isset($profile->ticket)){
+                if(count($profile->ticket?->visitsWithoutMisses) >= $availableVisitsNumber OR $profile->ticket?->end_date < today()) {
+                    Ticket::find($profile->ticket->id)->update(['is_closed' => 1]);
+                };
+            }
+        }
         return view('pages.group.show', [
             'group' => $group
         ]);
