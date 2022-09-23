@@ -26,6 +26,11 @@
             </thead>
             <tbody id="tbody">
             @foreach($group->karateki as $user)
+                @if(isset($user->ticket->is_closed) AND $user->ticket->is_closed == 0)
+                    <span class="d-none">{{$closed = false}}</span>
+                @else
+                    <span class="d-none">{{$closed = true}}</span>
+                @endif
                 <tr class="text-center @if((int)$user->balance < 0) bg-danger @endif" id="trUserId={{$user->id}}">
                     <td>
                         <button type="button" class="btn btn-close" data-bs-toggle="modal"
@@ -76,20 +81,16 @@
                     </td>
                     <td id="count-{{$user->id}}-{{$user->ticket->id ?? 0}}">{{$user->ticket?->visitsNumber ?? 0}}</td>
                     <td class="text-center" id="ticketDateid={{$user->id}}">
-                        @if(isset($user->ticket->is_closed) AND $user->ticket->is_closed == 0)
-                            {{$user->ticket?->end_date}}
-                        @else
-                            Нет абонемента
-                        @endif
+                        <span id="ticketIsOpen{{$user->id}}" class="@if($closed) d-none @endif">{{$user->ticket?->end_date}}</span>
+                        <span id="ticketIsClosed{{$user->id}}" class="@if(!$closed) d-none @endif">Нет абонемента</span>
                     </td>
-                    <td>@if(isset($user->ticket->is_closed) AND $user->ticket->is_closed == 0)
-                        @else
-                            <a href="/balance/{{$user->id}}/new-ticket" class="text-decoration-none text-white">
-                                <button class="btn btn-primary">
-                                    +
-                                </button>
-                            </a>
-                        @endisset
+                    <td>
+                        <a href="/balance/{{$user->id}}/new-ticket" id="newTicket{{$user->id}}"
+                           class="@if(!$closed) d-none @endif text-decoration-none text-white">
+                            <button class="btn btn-primary">
+                                +
+                            </button>
+                        </a>
                     </td>
                 </tr>
             @endforeach

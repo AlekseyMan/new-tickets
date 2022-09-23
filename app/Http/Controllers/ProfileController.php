@@ -92,7 +92,7 @@ class ProfileController extends Controller
 
     public function updateBalance(Request $request, Profile $profile)
     {
-        $profile->updateBalance($request->amount);
+        $profile->updateBalance((int)$request->amount);
         return back();
     }
 }

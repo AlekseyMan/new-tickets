@@ -34,7 +34,7 @@ class Ticket extends Model
 
     public function profile(): BelongsTo
     {
-        return $this->belongsTo(Profile::class, 'id', 'profile_id');
+        return $this->belongsTo(Profile::class, 'profile_id', 'id');
     }
 
     public function isClosed(): bool

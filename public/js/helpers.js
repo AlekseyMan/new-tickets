@@ -33,21 +33,28 @@ async function markVisit(event) {
         }),
     });
     let res = await response.json()
-    if (visited === 1) {
-        document.getElementById(event).className = "btn btn-success"
-        document.getElementById(event.replace('visit', 'miss')).className = "btn"
-        document.getElementById(event.replace('visit', 'count')).innerText = res.visits_number
+    if(res.visitDone === 1){
+        if (visited === 1) {
+            document.getElementById(event).className = "btn btn-success"
+            document.getElementById(event.replace('visit', 'miss')).className = "btn"
+            document.getElementById(event.replace('visit', 'count')).innerText = res.visits_number
+        } else {
+            document.getElementById(event).className = "btn btn-danger"
+            document.getElementById(event.replace('miss', 'visit')).className = "btn"
+            document.getElementById(event.replace('miss', 'count')).innerText = res.visits_number
+        }
+        if (res.is_closed == true) {
+            alert("У " + res.userName + " закончился абонемент.")
+            document.getElementById(event.replace(res.btnType, 'count')).classList.add("bg-danger")
+            document.getElementById("ticketDateid=" + res.userId).classList.add("bg-danger")
+            document.getElementById("ticketDateid=" + res.userId).innerText = "Абонемент закончился"
+        }
     } else {
-        document.getElementById(event).className = "btn btn-danger"
-        document.getElementById(event.replace('miss', 'visit')).className = "btn"
-        document.getElementById(event.replace('miss', 'count')).innerText = res.visits_number
-    }
-
-    if (res.is_closed === 1) {
-        alert("У " + res.userName + " закончился абонемент. Обновите страницу, чтобы завести новый абонемент.")
-        document.getElementById(event.replace(res.btnType, 'count')).classList.add("bg-danger")
-        document.getElementById("ticketDateid=" + res.userId).classList.add("bg-danger")
-        document.getElementById("ticketDateid=" + res.userId).innerText = "Абонемент закончился"
+        alert("У " + res.userName + " закончился абонемент. Необходимо завести новый, чтобы отметить посещение/пропуск.")
+        console.log(document.getElementById('ticketIsOpen' + res.id))
+        document.getElementById('ticketIsOpen' + res.id).classList.add('d-none')
+        document.getElementById('ticketIsClosed' + res.id).classList.remove('d-none')
+        document.getElementById('newTicket' + res.id).classList.remove('d-none')
     }
 }
 
