@@ -103,8 +103,10 @@ class Profile extends Model
     //Methods
     public function updateBalance(int $value)
     {
-        $newBalance = (int)$this->balance + $value;
-        $this->update(['balance' => $newBalance]);
+        if(!$this->isBlockedBalance()){
+            $newBalance = (int)$this->balance + $value;
+            $this->update(['balance' => $newBalance]);
+        }
     }
 
     public function openNewTicket(int $value)
@@ -114,5 +116,13 @@ class Profile extends Model
             'profile_id' => $this->id,
             'end_date'   => Carbon::now()->addMonth()->subDay()
         ]);
+    }
+
+    public function isBlockedBalance(): bool
+    {
+        if($this->updated_at < now()->addMinute(-1)){
+            return true;
+        }
+        return false;
     }
 }
