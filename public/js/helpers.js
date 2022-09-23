@@ -44,8 +44,8 @@ async function markVisit(event) {
     }
     if (res.is_closed == true) {
         alert("У " + res.userName + " закончился абонемент.")
-        document.getElementById(event.replace(res.btnType, 'count')).classList.add("bg-danger")
-        document.getElementById("ticketDateid=" + res.userId).classList.add("bg-danger")
+        document.getElementById(event.replace(res.btnType, 'count')).classList.add("bg-secondary")
+        document.getElementById("ticketDateid=" + res.userId).classList.add("bg-secondary")
         document.getElementById("ticketDateid=" + res.userId).innerText = "Абонемент закончился"
     }
 }
