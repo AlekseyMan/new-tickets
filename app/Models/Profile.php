@@ -13,10 +13,10 @@ class Profile extends Model
 {
     use HasFactory;
 
-    CONST ROLE_KARATEKA = "karateka";
-    CONST ROLE_PARENT = "parent";
-    CONST ROLE_COACH = "coach";
-    CONST QU = [
+    const ROLE_KARATEKA = "karateka";
+    const ROLE_PARENT = "parent";
+    const ROLE_COACH = "coach";
+    const QU = [
         '10',
         '9',
         '8',
@@ -28,7 +28,7 @@ class Profile extends Model
         '2',
         '1',
     ];
-    CONST DAN = [
+    const DAN = [
         '1',
         '2',
         '3',
@@ -74,13 +74,13 @@ class Profile extends Model
     public function scopeSearch($query)
     {
         $search = request()->query();
-        if(!empty($search)){
-            foreach($search as $key => $value){
-            	if(!empty($value)) {
-                   $query->when($key, function ($q) use ($key, $value){
-                       $q->where($key, 'LIKE', "%$value%");
-                   });
-               }
+        if (!empty($search)) {
+            foreach ($search as $key => $value) {
+                if (!empty($value)) {
+                    $query->when($key, function ($q) use ($key, $value) {
+                        $q->where($key, 'LIKE', "%$value%");
+                    });
+                }
             }
         }
         return $query;
@@ -105,11 +105,9 @@ class Profile extends Model
     //Methods
     public function updateBalance(int $value)
     {
-        if(!$this->isBlockedBalance()){
-            $newBalance = (int)$this->balance + $value;
-            $this->update(['balance' => $newBalance]);
-            Report::balanceReport(Auth::id(), $this, $value);
-        }
+        $newBalance = (int)$this->balance + $value;
+        $this->update(['balance' => $newBalance]);
+        Report::balanceReport(Auth::id(), $this, $value);
     }
 
     public function openNewTicket(int $value)
@@ -117,13 +115,13 @@ class Profile extends Model
         $this->updateBalance(-$value);
         return Ticket::create([
             'profile_id' => $this->id,
-            'end_date'   => Carbon::now()->addMonth()->subDay()
+            'end_date' => Carbon::now()->addMonth()->subDay()
         ]);
     }
 
     public function isBlockedBalance(): bool
     {
-        if($this->updated_at < now()->addMinute(-1)){
+        if ($this->updated_at < now()->addMinute(-1)) {
             return false;
         }
         return true;
