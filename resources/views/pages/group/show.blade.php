@@ -31,7 +31,7 @@
                 @else
                     <span class="d-none">{{$closed = true}}</span>
                 @endif
-                <tr class="text-center @if((int)$user->balance < 0) bg-secondary @endif" id="trUserId={{$user->id}}">
+                <tr class="text-center @if((int)$user->balance < 0) bg-secondary @elseif($closed) bg-info @endif" id="trUserId={{$user->id}}">
                     <td>
                         <button type="button" class="btn btn-close" data-bs-toggle="modal"
                                 data-bs-target="#removeFromGroup"
