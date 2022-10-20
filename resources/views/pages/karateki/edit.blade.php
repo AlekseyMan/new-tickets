@@ -50,8 +50,8 @@
                 <select name="team_id" class="form-select">
                     <option value="">-</option>
                     @foreach($teams as $team)
-                        <option value="{{$team->id}}" @if($profile->team_id == $team->id) selected @endif>
-                            {{$team->name ?? $team->team_number}}
+                        <option value="{{$team['id']}}" @if($profile->team_id == $team['id']) selected @endif>
+                            {{$team['name'] ?? $team['team_number']}}
                         </option>
                     @endforeach
                 </select>
