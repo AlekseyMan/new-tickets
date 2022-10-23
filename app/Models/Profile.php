@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Facades\Report;
+use App\Traits\HasRolesAndPermissions;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Profile extends Model
 {
-    use HasFactory;
+    use HasFactory, HasRolesAndPermissions;
 
     const ROLE_KARATEKA = "karateka";
     const ROLE_PARENT = "parent";
