@@ -64,7 +64,21 @@ class Profile extends Model
     //Scopes
     public function scopeKarateki($query)
     {
-        return $query->where('profile_role', self::ROLE_KARATEKA)->search()->orderBy('surname')->orderBy('name');
+        $id = Auth::id();
+        $profile = Profile::where('user_id', $id)->first();
+        if($profile->hasRole('admin')){
+            return $query->where('profile_role', self::ROLE_KARATEKA)
+                ->search()
+                ->orderBy('surname')
+                ->orderBy('name');
+        };
+        if($profile->hasRole('coach')){
+            return $query->where('profile_role', self::ROLE_KARATEKA)
+                ->where('coach_id', $id)
+                ->search()
+                ->orderBy('surname')
+                ->orderBy('name');
+        };
     }
 
     public function scopeCoaches($query)

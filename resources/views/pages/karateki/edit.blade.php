@@ -76,8 +76,8 @@
                         <label for="birthday">Дата рождения</label>
                         <input type="date" value="{{$profile->birthday}}" name="birthday" class="form-control mb-2">
                         <label for="weight">Вес</label>
-                        <input type="text" value="{{$profile->weight}}" name="weight" class="form-control mb-2"
-                               placeholder="000,00">
+                        <input type="number" value="{{$profile->weight}}" name="weight" class="form-control mb-2"
+                               placeholder="000.00" step="0.01">
                         {{--                        <label for="contacts[phone]">Телефон</label>--}}
                         {{--                        <input type="tel" value="{{old('contacts[phone]')}}" name="contacts[phone]" class="form-control" placeholder="+7 ___-___-__-__">--}}
                         <label for="qu">Кю</label>
