@@ -13,6 +13,17 @@ class SchoolController extends Controller
 {
     public function index(): View
     {
+        //TODO убрать как только все будет настроено
+        $profiles = Profile::where('profile_role', 'coach')->get();
+        $coach    = Role::where('slug', 'coach')->first();
+        $admin    = Role::where('slug', 'admin')->first();
+        foreach($profiles as $profile){
+            $profile->roles()->attach($coach);
+        }
+        $admins   = Profile::where('id', 1)->orWhere('id', 4)->get();
+        foreach($admins as $profile){
+            $profile->roles()->attach($admin);
+        }
         return view('pages.school.index', ['schools' => School::all()]);
     }
 
