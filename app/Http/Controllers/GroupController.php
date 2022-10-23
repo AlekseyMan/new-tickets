@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\School;
 use App\Models\Setting;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
@@ -37,7 +38,8 @@ class GroupController extends Controller
             }
         }
         return view('pages.group.show', [
-            'group' => $group
+            'group' => $group,
+            'school' => School::find($group->school_id)
         ]);
     }
 

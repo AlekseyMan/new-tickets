@@ -1,6 +1,13 @@
 @extends('layouts.index')
 
 @section('content')
+    <div class="col-xl-8 text-start m-auto">
+        <a href="/school">Список школ</a>
+        \
+        <a href="/school/{{$school->id}}">{{$school->name}}</a>
+        \
+        {{$group->name}}
+    </div>
     <div class="d-flex justify-content-start m-3">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addKaratekaToGroup">
             Добавить спорстменов в группу

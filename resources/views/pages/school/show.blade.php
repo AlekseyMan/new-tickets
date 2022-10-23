@@ -1,6 +1,11 @@
 @extends('layouts.index')
 
 @section('content')
+    <div class="col-xl-8 text-start m-auto">
+        <a href="/school">Список школ</a>
+        \
+        {{$school->name}}
+    </div>
     <div class="col-xl-12 text-center">
         <h3 class="">{{$school->name}}</h3>
         <h5>{{$school->address}}</h5>
@@ -76,7 +81,7 @@
             </div>
             <select name="coach_id" class="form-select">
                 @foreach($coaches as $coach)
-                    <option value="{{$coach->id}}">
+                    <option value="{{$coach->id}}" @if(\Illuminate\Support\Facades\Auth::user()->profile->id === $coach->id) selected @endif>
                         {{$coach->fullName}}
                     </option>
                 @endforeach

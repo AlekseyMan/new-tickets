@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SchoolRequest;
 use App\Models\Profile;
 use App\Models\School;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class SchoolController extends Controller
