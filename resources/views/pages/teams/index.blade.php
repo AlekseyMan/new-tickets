@@ -32,7 +32,7 @@
                     <h4>Выбор по тренеру</h4>
                     <select name="coach_id" id="coaches" class="form-select mb-2">
                         @foreach($coaches as $coach)
-                            <option value="{{$coach->id}}">{{$coach->fullName}}</option>
+                            <option value="{{$coach->id}}" @if(\Illuminate\Support\Facades\Auth::user()->profile->id === $coach->id) selected @endif>{{$coach->fullName}}</option>
                         @endforeach
                     </select>
                 </div>
