@@ -43,8 +43,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function profile(): BelongsTo
+    public function getProfileAttribute()
     {
-        return $this->belongsTo(Profile::class, 'user_id', 'id');
+        return Profile::where('user_id', $this->id)->first();
     }
+//    public function profile(): BelongsTo
+//    {
+//        return $this->belongsTo(Profile::class, 'user_id', 'id');
+//    }
 }

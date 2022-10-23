@@ -29,7 +29,7 @@
                 </label>
                 <select name="coach_id" class="form-select">
                     @foreach($coaches as $coach)
-                        <option value="{{$coach->id}}" @if(\Illuminate\Support\Facades\Auth::id() == $coach->id) selected @endif>
+                        <option value="{{$coach->id}}" @if(\Illuminate\Support\Facades\Auth::user()->profile->id === $coach->id) selected @endif>
                             {{$coach->fullName}}
                         </option>
                     @endforeach
