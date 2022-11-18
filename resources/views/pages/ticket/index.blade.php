@@ -2,6 +2,17 @@
 
 @section('content')
     <div class="table-responsive">
+        <div class="col-xl-12 d-flex justify-content-center mt-3">
+            <div>
+                <h3>Группы:</h3>
+            </div>
+            <div class="ms-3">
+                @foreach($profile->groups as $group)
+                    <a href="/group/{{$group->id}}">{{$group->name}}</a>
+                @endforeach
+            </div>
+
+        </div>
         <div class="col-xl-12 d-flex justify-content-center m-3" id="token" data-token="{{ csrf_token() }}">
             <h2>{{$profile->fullName}}</h2>
         </div>

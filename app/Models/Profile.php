@@ -7,6 +7,7 @@ use App\Traits\HasRolesAndPermissions;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
 
@@ -59,6 +60,11 @@ class Profile extends Model
     public function user(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Group::class,'groups_profiles');
     }
 
     //Scopes

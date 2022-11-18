@@ -13,7 +13,7 @@ class TicketController extends Controller
     public function index(Profile $profile)
     {
         return view('pages.ticket.index', [
-            'profile' => $profile,
+            'profile' => $profile
         ]);
     }
 
