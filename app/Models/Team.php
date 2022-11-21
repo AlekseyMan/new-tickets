@@ -18,13 +18,16 @@ class Team extends Model
 
     public function karateki(): HasMany
     {
-        return $this->hasMany(Profile::class, 'team_id', 'id')->orderBy('surname')->orderBy('name');
+        return $this->hasMany(Profile::class, 'team_id', 'id')
+            ->orderBy('surname')
+            ->orderBy('name');
     }
 
     public function updateTeams(array $teams)
     {
         foreach ($teams as $teamId => $members){
-            Profile::whereIn('id', array_keys($members))->update(['team_id' => $teamId]);
+            Profile::whereIn('id', array_keys($members))
+                ->update(['team_id' => $teamId]);
         }
     }
 
