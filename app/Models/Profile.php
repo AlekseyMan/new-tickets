@@ -74,14 +74,14 @@ class Profile extends Model
         $profile = Profile::where('user_id', $id)->first();
         if($profile->hasRole('admin')){
             return $query->where('profile_role', self::ROLE_KARATEKA)
-//                ->search()
+                ->search()
                 ->orderBy('surname')
                 ->orderBy('name');
         };
         if($profile->hasRole('coach')){
             return $query->where('profile_role', self::ROLE_KARATEKA)
                 ->where('coach_id', $profile->id)
-//                ->search()
+                ->search()
                 ->orderBy('surname')
                 ->orderBy('name');
         };
@@ -95,6 +95,7 @@ class Profile extends Model
     public function scopeSearch($query)
     {
         $search = request()->query();
+        if(isset($search['for_date'])){unset($search['for_date']);} //Убираем чтобы не влезало когда сортируем по дате визиты
         if (!empty($search)) {
             foreach ($search as $key => $value) {
                 if (!empty($value)) {
