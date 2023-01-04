@@ -31,7 +31,7 @@
                     <h4>Выбор по тренеру</h4>
                     <select name="coach_id" id="coaches" class="form-select mb-2">
                         @foreach($coaches as $coach)
-                            <option value="{{$coach->id}}" @if($_GET['coach_id'] === $coach->id) selected @elseif(\Illuminate\Support\Facades\Auth::user()->profile->id === $coach->id) selected @endif>{{$coach->fullName}}</option>
+                            <option value="{{$coach->id}}" @if(isset($_GET['coach_id']) AND $_GET['coach_id'] == $coach->id) selected @elseif(\Illuminate\Support\Facades\Auth::user()->profile->id === $coach->id) selected @endif>{{$coach->fullName}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -40,7 +40,7 @@
                     <select name="team_id" id="coaches" class="form-select mb-2">
                         <option value="">-</option>
                         @foreach($teams as $team)
-                            <option value="{{$team->id}}" @if($_GET['team_id'] === $team->id) selected @endif>{{$team->name ?? $team->number}}</option>
+                            <option value="{{$team->id}}" @if(isset($_GET['team_id']) AND $_GET['team_id'] == $team->id) selected @endif>{{$team->name ?? $team->number}}</option>
                         @endforeach
                     </select>
                 </div>
