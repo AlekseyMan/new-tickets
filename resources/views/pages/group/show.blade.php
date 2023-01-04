@@ -14,6 +14,8 @@
         </button>
         <div class="ms-5 d-flex justify-content-between col-xl-7">
             <h4>{{$group->formatedSchedule}}</h4>
+            <input type="date" class="form-control-sm" value="{{$_GET['for_date'] ?? date("Y-m-d")}}" id="visit-date">
+            <input type="hidden" name="coach_id" value="{{$profile->coach_id ?? 1}}" id="coach_id">
             <h3>Тренер: {{$group->coach->surname}} {{$group->coach->name}} {{$group->coach->patronymic}}</h3>
         </div>
     </div>
@@ -104,6 +106,11 @@
             </tbody>
         </table>
     </div>
+    <script>
+        document.getElementById('visit-date').addEventListener('change', (e)=>{
+            location.search = "?for_date=" + e.target.value
+        })
+    </script>
     <x-remove-from-group-modal groupId="{{$group->id}}"/>
     <x-add-karateka-to-group-modal groupId="{{$group->id}}"/>
 @endsection

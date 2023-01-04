@@ -26,27 +26,26 @@ class Visit extends Model
 
     public function addVisitToTable($data)
     {
+        isset($data['return_json']) ? $isReturnJson = 1 : $isReturnJson = 0;
+        unset($data['return_json']);
+        $data['coach_id'] = Profile::where('user_id', Auth::id())->first()->id;
+        isset($data['date']) ?: today()->format("Y-m-d");
+        $this->updateOrCreate(
+            [
+                'date' => $data['date'],
+                'ticket_id' => $data['ticket_id']
+            ],
+            $data);
         $ticket = Ticket::find($data['ticket_id']);
-        if (isset($data['date'])) {
-            $this->create($data);
-            $ticket->isClosed();
-            return back();
-        } else {
-            $data['coach_id'] = Profile::where('user_id', Auth::id())->first()->id;
-            $data['date'] = today()->format("Y-m-d");
-            $this->updateOrCreate(
-                [
-                    'date' => today()->format("Y-m-d"),
-                    'ticket_id' => $data['ticket_id']
-                ],
-                $data);
+        if($isReturnJson)
+        {
+            return response()->json([
+                'is_closed' => $ticket->isClosed(),
+                'userName' => $ticket->profile->fullName,
+                'visits_number' => $ticket->visitsNumber,
+            ]);
         }
-        $ticket = Ticket::find($data['ticket_id']);
-        return response()->json([
-            'is_closed' => $ticket->isClosed(),
-            'userName' => $ticket->profile->fullName,
-            'visits_number' => $ticket->visitsNumber,
-        ]);
+        return back();
     }
 
     public function getCoachAttribute()

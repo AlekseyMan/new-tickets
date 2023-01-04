@@ -10,6 +10,7 @@ class AddKaratekaToGroupModal extends Component
 {
     public $karateki;
     public $group;
+    public $coaches;
     /**
      * Create a new component instance.
      *
@@ -17,8 +18,9 @@ class AddKaratekaToGroupModal extends Component
      */
     public function __construct($groupId)
     {
-        $this->karateki =  Profile::karateki()->get();
-        $this->group = Group::find($groupId);
+        $this->karateki = Profile::karateki()->get();
+        $this->coaches  = Profile::coaches()->get();
+        $this->group    = Group::find($groupId);
     }
 
     /**

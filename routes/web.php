@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\VisitController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TeamsController;
 
@@ -57,7 +56,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/open-ticket', [TicketController::class, 'openTicket']);
     });
 
-    //Resource контроллеры: school, karateki, group, visit
+    //Resource контроллеры: school, karateki, group, visit, settings
     Route::resource('group', 'App\Http\Controllers\GroupController');
     Route::resource('coaches', 'App\Http\Controllers\CoachesController');
     Route::resource('karateki', 'App\Http\Controllers\KaratekiController');
@@ -65,6 +64,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('profile/{profile}/ticket', 'App\Http\Controllers\TicketController');
     Route::resource('school', 'App\Http\Controllers\SchoolController');
     Route::resource('teams', 'App\Http\Controllers\TeamsController');
+    Route::resource('settings', 'App\Http\Controllers\SettingController');
 });
 Route::get('/teams-list', [TeamsController::class, 'teamsList']);
 

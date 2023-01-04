@@ -53,12 +53,22 @@ class Ticket extends Model
 
     public function getVisitAttribute()
     {
-        return Visit::where('ticket_id', $this->id)->where('date', today())->where('visited', 1)->first();
+        if(isset($_GET['for_date'])){
+            $date = $_GET['for_date'];
+        } else {
+            $date = today();
+        }
+        return Visit::where('ticket_id', $this->id)->where('date', $date)->where('visited', 1)->first();
     }
 
     public function getMissAttribute()
     {
-        return Visit::where('ticket_id', $this->id)->where('date', today())->where('visited', 0)->first();
+        if(isset($_GET['for_date'])){
+            $date = $_GET['for_date'];
+        } else {
+            $date = today();
+        }
+        return Visit::where('ticket_id', $this->id)->where('date', $date)->where('visited', 0)->first();
     }
 
     public function resume($userId)

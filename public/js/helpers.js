@@ -20,6 +20,8 @@ async function markVisit(event) {
     }
 
     const token = document.getElementById('token').dataset.token
+    let visit_date = document.getElementById("visit-date").value;
+    let coach_id = document.getElementById("coach_id").value;
 
     let response = await fetch('/visit', {
         method: 'POST',
@@ -27,9 +29,12 @@ async function markVisit(event) {
             'Content-Type': 'application/json'
         }),
         body: JSON.stringify({
-            visited: visited,
-            ticket_id: event.split('-')[2],
-            _token: token
+            return_json : 1,
+            visited     : visited,
+            date        : visit_date,
+            coach_id    : coach_id,
+            ticket_id   : event.split('-')[2],
+            _token      : token
         }),
     });
     let res = await response.json()

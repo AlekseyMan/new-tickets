@@ -74,14 +74,14 @@ class Profile extends Model
         $profile = Profile::where('user_id', $id)->first();
         if($profile->hasRole('admin')){
             return $query->where('profile_role', self::ROLE_KARATEKA)
-                ->search()
+//                ->search()
                 ->orderBy('surname')
                 ->orderBy('name');
         };
         if($profile->hasRole('coach')){
             return $query->where('profile_role', self::ROLE_KARATEKA)
                 ->where('coach_id', $profile->id)
-                ->search()
+//                ->search()
                 ->orderBy('surname')
                 ->orderBy('name');
         };
@@ -110,7 +110,8 @@ class Profile extends Model
     //Attributes
     public function getTicketAttribute()
     {
-        return Ticket::where('profile_id', $this->id)->where('is_closed', 0)->latest('id')->first();
+//TODO        return Ticket::where('profile_id', $this->id)->where('is_closed', 0)->latest('id')->first();
+        return Ticket::where('profile_id', $this->id)->latest('id')->first();
     }
 
     public function getTicketsAttribute()
