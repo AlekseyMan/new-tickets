@@ -108,4 +108,24 @@ class Ticket extends Model
             'is_closed'     => false
         ]);
     }
+
+    public function getReport($params){
+        $userId     = Profile::find($params['coach_id'])->user_id;
+        $startDate  = date("Y-m-d H:i:s", strtotime("{$params['year']}-{$params['month']}-1 00:00:01"));
+        $lastDay    = date('t', strtotime($startDate));
+        $endDate    = date("Y-m-d H:i:s", strtotime("{$params['year']}-{$params['month']}-{$lastDay} 23:59:59"));
+        $opened     = Reports::where('user_id', $userId)->where('created_at', '>', $startDate)->where('created_at', '<', $endDate)->whereJsonContains('data->action', "Открыт новый абонемент")->count();
+        $payd       = Reports::where('user_id', $userId)->where('created_at', '>', $startDate)->where('created_at', '<', $endDate)->whereJsonContains('data->action', "Изменение баланса")->get();
+        $paydCount = 0;
+        foreach ($payd as $item){
+            $array = json_decode($item->data, true);
+            if($array['newValues'] - 2500 == $array['oldValues']){
+                $paydCount ++;
+            }
+        }
+        return json_encode([
+            'opened' => $opened,
+            'payd'   => $paydCount
+        ]);
+    }
 }

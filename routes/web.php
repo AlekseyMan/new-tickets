@@ -33,7 +33,7 @@ Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::group(['middleware' => ['auth']], function () {
 
     Route::post('/teams/update-teams', [TeamsController::class, 'updateKaratekiTeams']);
-
+    Route::post('/tickets/get-info', [TicketController::class, 'getReport']);
     //Действия с балансом профиля
     Route::group(['prefix' => '/balance/{profile}'], function () {
         Route::get('/addPaymentForTicket', [ProfileController::class, 'addPaymentForTicket']);

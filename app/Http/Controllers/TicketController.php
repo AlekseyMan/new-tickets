@@ -17,6 +17,9 @@ class TicketController extends Controller
         ]);
     }
 
+    public function getReport(Request $request, Ticket $ticket){
+        return $ticket->getReport($request->all());
+    }
     public function create()
     {
         //
