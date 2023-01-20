@@ -1,12 +1,16 @@
 @extends('layouts.index')
 @section('content')
-    <div class="d-flex col-5 justify-content-center m-auto" id="token" data-token="{{ csrf_token() }}">
-        <select name="coach" id="coach" class="form-select m-1">
-            @foreach($coaches as $coach)
-                <option value="{{$coach->id}}">{{$coach->fullName}}</option>
-            @endforeach
-        </select>
-        <div class="col-3">
+    <div class="d-flex col-10 justify-content-center m-auto" id="token" data-token="{{ csrf_token() }}">
+        <div class="text-center">
+            <label >Тренер</label>
+            <select name="coach" id="coach" class="form-select m-1">
+                @foreach($coaches as $coach)
+                    <option value="{{$coach->id}}">{{$coach->fullName}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-3 text-center">
+            <label>Месяц</label>
             <select name="month" id="month" class="form-select m-1">
                 <option value="1">Январь</option>
                 <option value="2">Февраль</option>
@@ -22,7 +26,8 @@
                 <option value="12">Декабрь</option>
             </select>
         </div>
-        <div class="col-2">
+        <div class="col-2 text-center">
+            <label>Год</label>
             <select name="year" id="year" class="form-select m-1">
                 <option value="2022">2022</option>
                 <option value="2023">2023</option>
@@ -32,7 +37,7 @@
     <div class="mt-3 text-center">
         <div class="btn btn-success" onclick="getReport()">Отобразить</div>
     </div>
-    <div class="card col-5 m-auto mt-3">
+    <div class="card col-8 m-auto mt-3">
         <div class="card-header text-center">
             <b class="m-auto"><h2>Статистика</h2></b>
         </div>
