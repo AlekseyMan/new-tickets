@@ -109,23 +109,49 @@ class Ticket extends Model
         ]);
     }
 
+    public function countPaidTickets($paid): int
+    {
+        $ticketCost = Setting::whereName('ticketAmount')->first()->value;
+        $paydCount = 0;
+        foreach ($paid as $item){
+            $array = json_decode($item->data, true);
+            if($array['newValues'] - $ticketCost == $array['oldValues']){
+                $paydCount ++;
+            }
+        }
+        return $paydCount;
+    }
     public function getReport($params){
         $userId     = Profile::find($params['coach_id'])->user_id;
         $startDate  = date("Y-m-d H:i:s", strtotime("{$params['year']}-{$params['month']}-1 00:00:01"));
         $lastDay    = date('t', strtotime($startDate));
         $endDate    = date("Y-m-d H:i:s", strtotime("{$params['year']}-{$params['month']}-{$lastDay} 23:59:59"));
-        $opened     = Reports::where('user_id', $userId)->where('created_at', '>', $startDate)->where('created_at', '<', $endDate)->whereJsonContains('data->action', "Открыт новый абонемент")->count();
-        $payd       = Reports::where('user_id', $userId)->where('created_at', '>', $startDate)->where('created_at', '<', $endDate)->whereJsonContains('data->action', "Изменение баланса")->get();
-        $paydCount = 0;
-        foreach ($payd as $item){
-            $array = json_decode($item->data, true);
-            if($array['newValues'] - 2500 == $array['oldValues']){
-                $paydCount ++;
-            }
+        $schools    = School::all();
+        $result     = [];
+        foreach ($schools as $school){
+            $opened     = Reports::whereIn('model_id', $school->karatekiIds)
+                ->where('type', 'profile')
+                ->where('user_id', $userId)
+                ->where('created_at', '>', $startDate)
+                ->where('created_at', '<', $endDate)
+                ->whereJsonContains('data->action', "Открыт новый абонемент")
+                ->count();
+            $paid       = Reports::whereIn('model_id', $school->karatekiIds)
+                ->where('type', 'profile')
+                ->where('user_id', $userId)
+                ->where('created_at', '>', $startDate)
+                ->where('created_at', '<', $endDate)
+                ->whereJsonContains('data->action', "Изменение баланса")
+                ->get();
+            $result[$school->name]['opened'] = $opened;
+            $result[$school->name]['paid']   = $this->countPaidTickets($paid);
         }
+        $opened     = Reports::where('user_id', $userId)->where('created_at', '>', $startDate)->where('created_at', '<', $endDate)->whereJsonContains('data->action', "Открыт новый абонемент")->count();
+        $paid       = Reports::where('user_id', $userId)->where('created_at', '>', $startDate)->where('created_at', '<', $endDate)->whereJsonContains('data->action', "Изменение баланса")->get();
         return json_encode([
-            'opened' => $opened,
-            'payd'   => $paydCount
+            'opened'  => $opened,
+            'paid'    => $this->countPaidTickets($paid),
+            'schools' => $result
         ]);
     }
 }

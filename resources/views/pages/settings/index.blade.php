@@ -42,8 +42,15 @@
             <b class="m-auto"><h2>Статистика</h2></b>
         </div>
         <div class="card-body">
-            <b><p>Открыто абонементов: <span id="tickets-open">0</span></p><br></b>
-            <b><p>Куплено абонементов: <span id="tickets-buyed">0</span></p></b>
+            <div class="text-center">
+                <b><p>Всего открыто абонементов за месяц: <span id="tickets-open">0</span></p><br></b>
+                <b><p>Всего куплено абонементов за месяц: <span id="tickets-buyed">0</span></p></b>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="text-center" id="school-statistics">
+
+            </div>
         </div>
     </div>
     <script>
@@ -52,6 +59,9 @@
             const month = document.getElementById('month')
             const year  = document.getElementById('year')
             const token = document.getElementById('token').dataset.token
+            const block = document.getElementById('school-statistics')
+            block.innerHTML = ""
+            block.innerHTML = "<h3>Статистика по школам:</h3>"
             let response = await fetch('/tickets/get-info', {
                 method: 'POST',
                 headers: new Headers({
@@ -66,7 +76,14 @@
             });
             let res = await response.json()
             document.getElementById('tickets-open').innerText = res.opened
-            document.getElementById('tickets-buyed').innerText = res.payd
+            document.getElementById('tickets-buyed').innerText = res.paid
+            for(let name in res.schools){
+                let elem = document.createElement('div')
+                elem.innerHTML = "<b><p>"+ name +"</p></b>" +
+                    "<p>Открыто: "+ res.schools[name].opened +"</p>" +
+                    "<p>Куплено: "+ res.schools[name].paid +"</p>"
+                block.insertAdjacentElement("beforeend", elem)
+            }
         }
     </script>
 @endsection

@@ -36,4 +36,18 @@ class School extends Model
     {
         return self::DAYS;
     }
+
+    public function getKaratekiIdsAttribute() :array
+    {
+        $groups = Group::where('school_id', $this->id)->get();
+        $result = [];
+        foreach($groups as $group){
+            if(!empty($group->karateki)){
+                foreach ($group->karateki as $karateka){
+                    $result[] = $karateka->id;
+                }
+            }
+        }
+        return $result;
+    }
 }
