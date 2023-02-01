@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Arr;
 
 class Ticket extends Model
 {
@@ -129,13 +130,15 @@ class Ticket extends Model
         $schools    = School::all();
         $result     = [];
         foreach ($schools as $school){
-            $opened     = Reports::whereIn('data->oldValues.profile_id', $school->karatekiIds)
-                ->where('type', 'ticket')
+            $opened     = Reports::where('type', 'ticket')
                 ->where('user_id', $userId)
                 ->where('created_at', '>', $startDate)
                 ->where('created_at', '<', $endDate)
                 ->whereJsonContains('data->action', "Открыт новый абонемент")
-                ->count();
+                ->get();
+            $opened = array_filter($opened->toArray(), function($elem) use ($school){
+                return in_array(json_decode($elem['data'],true)['oldValues'][1]['profile_id'], $school->karatekiIds);
+            });
             $paid       = Reports::whereIn('model_id', $school->karatekiIds)
                 ->where('type', 'profile')
                 ->where('user_id', $userId)
@@ -143,7 +146,7 @@ class Ticket extends Model
                 ->where('created_at', '<', $endDate)
                 ->whereJsonContains('data->action', "Изменение баланса")
                 ->get();
-            $result[$school->name]['opened'] = $opened;
+            $result[$school->name]['opened'] = count($opened);
             $result[$school->name]['paid']   = $this->countPaidTickets($paid);
         }
         $opened     = Reports::where('user_id', $userId)->where('created_at', '>', $startDate)->where('created_at', '<', $endDate)->whereJsonContains('data->action', "Открыт новый абонемент")->count();
