@@ -129,7 +129,7 @@ class Ticket extends Model
         $schools    = School::all();
         $result     = [];
         foreach ($schools as $school){
-            $opened     = Reports::whereIn('model_id', $school->karatekiIds)
+            $opened     = Reports::whereIn('data.profile_id', $school->karatekiIds)
                 ->where('type', 'ticket')
                 ->where('user_id', $userId)
                 ->where('created_at', '>', $startDate)
