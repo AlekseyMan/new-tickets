@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Profile;
 use App\Models\School;
 use App\Models\Setting;
 use App\Models\Ticket;
@@ -45,12 +46,19 @@ class GroupController extends Controller
 
     public function edit(Group $group)
     {
-        return back();
+        return view('pages.group.edit', [
+            'group'     => $group,
+            'school'    => School::find($group->school_id),
+            'coaches'   => Profile::coaches()->get(),
+        ]);
     }
 
     public function update(Request $request, Group $group)
     {
-        return back();
+        $data               = $request->except('_token', '_method');
+        $data['schedule']   = json_encode($data['schedule']);
+        Group::find($group->id)->update($data);
+        return redirect('/school/' . $data['school_id']);
     }
 
     public function destroy(Group $group)

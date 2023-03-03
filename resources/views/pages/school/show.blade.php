@@ -35,7 +35,7 @@
                     </td>
                     <td>
                         @isset($group->coach)
-                            {{$group->coach->surname}} {{$group->coach->name}} {{$group->coach->patronymic}}
+                            {{$group->coach->surname}} {{$group->coach->name}} {{$group->coach->patronymic}} ({{$group->ticket_amount}})
                         @endisset
                     </td>
                     <td class="col-xl-2">
@@ -86,6 +86,10 @@
                     </option>
                 @endforeach
             </select>
+            <br>
+            <div class="text-danger"> {{$errors->first('ticket_amount')}} </div>
+            <label for="ticket_amount">Стоимость абонемента</label>
+            <input class="form-control m-2" type="number" min="0" name="ticket_amount" id="ticket_amount" autocomplete="off" value="{{ old('ticket_amount') ?? $school->ticket_amount}}">
             <button class="btn btn-success mb-4 mt-2">Добавить</button>
         </form>
 

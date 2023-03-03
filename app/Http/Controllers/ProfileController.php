@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Facades\Report;
+use App\Models\Group;
 use App\Models\Profile;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -77,15 +78,15 @@ class ProfileController extends Controller
         return redirect()->route('karateki.index');
     }
 
-    public function addPaymentForTicket(Profile $profile)
+    public function addPaymentForTicket(Profile $profile, Group $group)
     {
-        $profile->updateBalance(Setting::whereName('ticketAmount')->first()->value);
+        $profile->updateBalance($group->ticket_amount);
         return back();
     }
 
-    public function newTicket(Profile $profile)
+    public function newTicket(Profile $profile, Group $group)
     {
-        $ticket = $profile->openNewTicket(Setting::whereName('ticketAmount')->first()->value);
+        $ticket = $profile->openNewTicket($group->ticket_amount);
         Report::ticketReport(Auth::id(), 'Открыт новый абонемент', $ticket->id);
         return back();
     }

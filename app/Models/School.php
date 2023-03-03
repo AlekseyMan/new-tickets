@@ -24,7 +24,8 @@ class School extends Model
         'name',
         'address',
         'contacts',
-        'description'
+        'description',
+        'ticket_amount'
     ];
 
     public function groups(): HasMany
@@ -49,5 +50,10 @@ class School extends Model
             }
         }
         return $result;
+    }
+
+    public function getTicketAmountAttribute($value)
+    {
+        return $value ?? Setting::whereName('ticketAmount')->first()->value;
     }
 }

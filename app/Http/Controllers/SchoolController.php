@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SchoolRequest;
 use App\Models\Profile;
 use App\Models\School;
+use App\Models\Setting;
 use Illuminate\View\View;
 
 class SchoolController extends Controller
@@ -16,13 +17,17 @@ class SchoolController extends Controller
 
     public function create(): View
     {
-        return view('pages.school.create', ['coaches' => Profile::coaches()->get()]);
+        return view('pages.school.create', [
+            'coaches'       => Profile::coaches()->get(),
+            'ticketAmount'  => Setting::whereName('ticketAmount')->first()->value
+        ]);
     }
 
     public function store(SchoolRequest $request, School $school)
     {
         $data = $request->validated();
         $data['contacts'] = json_encode($data['contacts']);
+        (int)$data['ticket_amount'] > 0 ?: $data['ticket_amount'] = Setting::whereName('ticketAmount')->first()->value;
         $school->create($data);
         return back();
     }
@@ -30,8 +35,8 @@ class SchoolController extends Controller
     public function show(School $school): View
     {
         return view('pages.school.show', [
-            'school' => $school,
-            'coaches' => Profile::coaches()->get()
+            'school'        => $school,
+            'coaches'       => Profile::coaches()->get(),
         ]);
     }
 

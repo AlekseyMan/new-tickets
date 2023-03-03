@@ -18,6 +18,7 @@ class Group extends Model
         'name',
         'schedule',
         'temporary_info',
+        'ticket_amount'
     ];
 
     public function school(): BelongsTo
@@ -49,5 +50,10 @@ class Group extends Model
     public function coach(): HasOne
     {
         return $this->hasOne(Profile::class, 'id', 'coach_id');
+    }
+
+    public function getTicketAmountAttribute($value)
+    {
+        return $value ?? School::find($this->school_id)->ticket_amount;
     }
 }

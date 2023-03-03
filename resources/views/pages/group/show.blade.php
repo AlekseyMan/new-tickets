@@ -81,7 +81,7 @@
                         <b id="userId={{$user->id}}">{{$user->balance ?? 0}}</b>
                         @if($user->balance < 0)
                             <button type="button" class="btn btn-light ms-2">
-                                <a href="/balance/{{$user->id}}/addPaymentForTicket"
+                                <a href="/balance/{{$user->id}}/addPaymentForTicket/{{$group->id}}"
                                    class="text-decoration-none text-black">
                                     Оплатить
                                 </a>
@@ -94,7 +94,7 @@
                         <span id="ticketIsClosed{{$user->id}}" class="@if(!$closed) d-none @endif">Нет абонемента</span>
                     </td>
                     <td>
-                        <a href="/balance/{{$user->id}}/new-ticket" id="newTicket{{$user->id}}"
+                        <a href="/balance/{{$user->id}}/new-ticket/{{$group->id}}" id="newTicket{{$user->id}}"
                            class="@if(!$closed) d-none @endif text-decoration-none text-white">
                             <button class="btn btn-primary">
                                 +
