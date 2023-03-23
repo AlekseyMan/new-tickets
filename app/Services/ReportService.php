@@ -59,5 +59,4 @@ class ReportService
         $reports->data = json_encode($reportData);
         $reports->save();
     }
-
 }

@@ -44,7 +44,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     //Действия с пользователями групп
     Route::group(['prefix' => '/group/{group}'], function () {
-        Route::post('/add-karateki-to-group', [GroupController::class, 'addKaratekiToGroup']);
+        Route::post('/add-karateka-to-group', [GroupController::class, 'addKaratekaToGroup']);
         Route::post('/remove-from-group', [GroupController::class, 'removeFromGroup']);
     });
 

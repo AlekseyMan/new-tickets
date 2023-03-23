@@ -166,5 +166,4 @@ function teamEdit(id) {
         document.getElementById("button-cancel-" + id).removeEventListener('click', () => {
         })
     })
-    console.log(id)
 }

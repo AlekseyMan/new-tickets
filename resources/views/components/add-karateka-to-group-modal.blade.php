@@ -2,17 +2,7 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="m-3 d-flex flex-column" id="check-block">
-                <h5 class="modal-title" id="addKaratekaToGroupLabel">Выберите тренера </h5>
-                @foreach($coaches as $coach)
-                    <div class="mt-1">
-                        <input type="checkbox" value="{{$coach->id}}" id="coach_{{$coach->id}}"
-                               @if(\Illuminate\Support\Facades\Auth::user()->profile->id === $coach->id) checked @endif>
-                        <label for="coach_{{$coach->id}}">{{$coach->fullName}}</label>
-                    </div>
-                @endforeach
-            </div>
-            <form action="/group/{{$group->id}}/add-karateki-to-group" method="POST">
+            <form action="/group/{{$group->id}}/add-karateka-to-group" method="POST">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="addKaratekaToGroupLabel">Добавить </h5>
@@ -20,9 +10,9 @@
                 </div>
                 <div class="modal-body">
                     Добавить в группу:
-                    <select name="ids[]" id="selectKarateka" class="form-select" multiple
-                            aria-label="multiple select example">
-                        <option disabled selected value="0">Выберите спорстмена</option>
+                    <input type="text" name="name" class="form-control" list="karateki"
+                           placeholder="Нажмите для выбора спортсмена или начните ввод имени">
+                    <datalist id="karateki">
                         @foreach($karateki as $user)
                             {{$show = true}}
                             @foreach($group->karateki as $groupUser)
@@ -31,10 +21,13 @@
                                 @endif
                             @endforeach
                             @if($show)
-                                <option value="{{$user->id}}">{{$user->surname}} {{$user->name}}</option>
+                                <option>{{$user->surname}} {{$user->name}}</option>
                             @endif
                         @endforeach
-                    </select>
+                    </datalist>
+                        <option disabled selected value="0">Выберите спорстмена</option>
+
+                    </input>
                 </div>
                 <div class="modal-footer">
                     <div class="btn btn-secondary" data-bs-dismiss="modal">Отмена</div>
@@ -46,14 +39,4 @@
         </div>
     </div>
 </div>
-<script>
-    const coaches        = document.getElementById('check-block').querySelectorAll('input')
-    const selectKarateka = document.getElementById('selectKarateka')
-
-    coaches.forEach((coach) => {
-        coach.addEventListener('change', (e) => {
-            console.log(e)
-        })
-    })
-</script>
 

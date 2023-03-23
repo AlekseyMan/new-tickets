@@ -67,9 +67,14 @@ class GroupController extends Controller
         return back();
     }
 
-    public function addKaratekiToGroup(Request $request, Group $group)
+    public function addKaratekaToGroup(Request $request, Group $group)
     {
-        $group->karateki()->attach($request->ids);
+        $nameArray = explode(" ", $request->name);
+        if(count($nameArray) > 1){
+            if($id = Profile::whereName($nameArray[1])->whereSurname($nameArray[0])->first()?->id){
+                $group->karateki()->attach($id);
+            }
+        };
         return back();
     }
 
