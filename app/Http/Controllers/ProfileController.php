@@ -87,6 +87,7 @@ class ProfileController extends Controller
     public function newTicket(Profile $profile, Group $group)
     {
         if($ticket = $profile->openNewTicket($group->ticket_amount)){
+            $profile->balance < 0 ?: Report::paymentForTicketReport(Auth::id(), $profile, $group->ticket_amount);
             Report::ticketReport(Auth::id(), 'Открыт новый абонемент', $ticket->id);
         };
         return back();
