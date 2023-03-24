@@ -6,6 +6,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TeamsController;
+use App\Http\Controllers\SettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,25 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/pause-ticket', [TicketController::class, 'pauseTicket']);
         Route::get('/close-ticket', [TicketController::class, 'closeTicket']);
         Route::get('/open-ticket', [TicketController::class, 'openTicket']);
+    });
+
+    //Действия с пунктом настройки TODO (заменить на отчеты)
+    Route::group(['prefix' => '/settings'], function () {
+        Route::get('/reports', [SettingController::class, 'showAdvanceReport']);
+        Route::get('/update-reports', function(){
+            $allBalanceChanges = \App\Models\Reports::whereJsonContains('data->action', "Изменение баланса")
+                ->where('created_at', '>', '2023-01-01')
+                ->get()->toArray();
+            $allBalanceChanges =  array_filter($allBalanceChanges,function ($item){
+                $data = json_decode($item['data'], true);
+               return $data['newValues'] - $data['oldValues'] == 3000;
+            });
+            foreach($allBalanceChanges as $value){
+                \App\Models\Reports::find($value['id'])->update(['data' => json_encode([
+                    'action'  => 'Оплата за абонемент',
+                    'payment' => 3000], JSON_UNESCAPED_UNICODE)]);
+            }
+        });
     });
 
     //Resource контроллеры: school, karateki, group, visit, settings

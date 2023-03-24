@@ -85,4 +85,10 @@ class SettingController extends Controller
     {
         //
     }
+
+    public function showAdvanceReport(){
+        return view('pages.settings.report', [
+            'coaches' => Profile::coaches()->get()
+        ]);
+    }
 }
