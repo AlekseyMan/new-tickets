@@ -60,20 +60,6 @@ Route::group(['middleware' => ['auth']], function () {
     //Действия с пунктом настройки TODO (заменить на отчеты)
     Route::group(['prefix' => '/settings'], function () {
         Route::get('/reports', [SettingController::class, 'showAdvanceReport']);
-        Route::get('/update-reports', function(){
-            $allBalanceChanges = \App\Models\Reports::whereJsonContains('data->action', "Изменение баланса")
-                ->where('created_at', '>', '2023-01-01')
-                ->get()->toArray();
-            $allBalanceChanges =  array_filter($allBalanceChanges,function ($item){
-                $data = json_decode($item['data'], true);
-               return $data['newValues'] - $data['oldValues'] == 3000;
-            });
-            foreach($allBalanceChanges as $value){
-                \App\Models\Reports::find($value['id'])->update(['data' => json_encode([
-                    'action'  => 'Оплата за абонемент',
-                    'payment' => 3000], JSON_UNESCAPED_UNICODE)]);
-            }
-        });
     });
 
     //Resource контроллеры: school, karateki, group, visit, settings
