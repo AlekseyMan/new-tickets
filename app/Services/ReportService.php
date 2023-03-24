@@ -59,4 +59,15 @@ class ReportService
         $reports->data = json_encode($reportData);
         $reports->save();
     }
+
+    public function paymentForTicketReport(int $userId, Profile $profile, int $amount){
+        $reportData['action'] = 'Оплата за абонемент';
+        $reportData['payment'] = $amount;
+        $reports = new Reports();
+        $reports->type = 'profile';
+        $reports->model_id = $profile->id;
+        $reports->user_id = $userId;
+        $reports->data = json_encode($reportData);
+        $reports->save();
+    }
 }

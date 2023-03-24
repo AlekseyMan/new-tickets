@@ -80,14 +80,15 @@ class ProfileController extends Controller
 
     public function addPaymentForTicket(Profile $profile, Group $group)
     {
-        $profile->updateBalance($group->ticket_amount);
+        $profile->updateBalance($group->ticket_amount, 'Оплата за абонемент');
         return back();
     }
 
     public function newTicket(Profile $profile, Group $group)
     {
-        $ticket = $profile->openNewTicket($group->ticket_amount);
-        Report::ticketReport(Auth::id(), 'Открыт новый абонемент', $ticket->id);
+        if($ticket = $profile->openNewTicket($group->ticket_amount)){
+            Report::ticketReport(Auth::id(), 'Открыт новый абонемент', $ticket->id);
+        };
         return back();
     }
 

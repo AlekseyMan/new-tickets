@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
+use function PHPUnit\Framework\throwException;
 
 class Profile extends Model
 {
@@ -126,25 +127,30 @@ class Profile extends Model
     }
 
     //Methods
-    public function updateBalance(int $value)
+    public function updateBalance(int $value, $reportType = 'balanceChange')
     {
-        $newBalance = (int)$this->balance + $value;
-        $this->update(['balance' => $newBalance]);
-        Report::balanceReport(Auth::id(), $this, $value);
+        if(!$this->isBlockedBalance()){
+            $newBalance = (int)$this->balance + $value;
+            $this->update(['balance' => $newBalance]);
+            $reportType === 'balanceChange' ? Report::balanceReport(Auth::id(), $this, $value) : Report::paymentForTicketReport(Auth::id(), $this, $value);
+        }
     }
 
     public function openNewTicket(int $value)
     {
-        $this->updateBalance(-$value);
-        return Ticket::create([
-            'profile_id' => $this->id,
-            'end_date' => Carbon::now()->addMonth()->subDay()
-        ]);
+        if(!Ticket::where('profile_id', $this->id)->where('created_at', '>=', Carbon::today())->first()){
+            $this->updateBalance(-$value);
+            return Ticket::create([
+                'profile_id' => $this->id,
+                'end_date' => Carbon::now()->addMonth()->subDay()
+            ]);
+        }
+        return false;
     }
 
     public function isBlockedBalance(): bool
     {
-        if ($this->updated_at < now()->addMinute(-1)) {
+        if ($this->updated_at < now()->addSeconds(-15)) {
             return false;
         }
         return true;
