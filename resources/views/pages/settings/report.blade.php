@@ -1,5 +1,5 @@
-<?php
-?>
+@extends('layouts.index')
+@section('content')
 <div class="card">
     <div class="table-responsive">
         <table
@@ -17,10 +17,10 @@
                 <td class="col-xl-2">
 
                 </td>
-                <td>
+                <td class="col-xl-4">
 
                 </td>
-                <td>
+                <td class="col-xl-3">
 
                 </td>
                 <td class="col-xl-2">
@@ -31,3 +31,4 @@
         </table>
     </div>
 </div>
+@endsection

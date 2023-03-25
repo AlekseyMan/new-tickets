@@ -111,12 +111,14 @@ class Ticket extends Model
     }
 
     public function getReport($params){
-        $userId     = Profile::find($params['coach_id'])->user_id;
-        $startDate  = date("Y-m-d H:i:s", strtotime("{$params['year']}-{$params['month']}-1 00:00:01"));
-        $lastDay    = date('t', strtotime($startDate));
-        $endDate    = date("Y-m-d H:i:s", strtotime("{$params['year']}-{$params['month']}-{$lastDay} 23:59:59"));
-        $schools    = School::all();
-        $result     = [];
+        $userId         = Profile::find($params['coach_id'])->user_id;
+        $startDate      = date("Y-m-d H:i:s", strtotime("{$params['year']}-{$params['month']}-1 00:00:01"));
+        $lastDay        = date('t', strtotime($startDate));
+        $endDate        = date("Y-m-d H:i:s", strtotime("{$params['year']}-{$params['month']}-{$lastDay} 23:59:59"));
+        $schools        = School::all();
+        $result         = [];
+        $totalOpened    = 0;
+        $totalPaid      = 0;
         foreach ($schools as $school){
             $opened     = Reports::where('type', 'ticket')
                 ->where('user_id', $userId)
@@ -136,13 +138,22 @@ class Ticket extends Model
                 ->count();
             $result[$school->name]['opened'] = count($opened);
             $result[$school->name]['paid']   = $paid;
+            $totalOpened = $totalOpened + count($opened);
+            $totalPaid   = $totalPaid + $paid;
         }
-        $opened     = Reports::where('user_id', $userId)->where('created_at', '>', $startDate)->where('created_at', '<', $endDate)->whereJsonContains('data->action', "Открыт новый абонемент")->count();
-        $paid       = Reports::where('user_id', $userId)->where('created_at', '>', $startDate)->where('created_at', '<', $endDate)->whereJsonContains('data->action', "Оплата за абонемент")->count();
         return json_encode([
-            'opened'  => $opened,
-            'paid'    => $paid,
+            'opened'  => $totalOpened,
+            'paid'    => $totalPaid,
             'schools' => $result
         ]);
+    }
+
+    public function getAdvancedReport($params){
+        dd(json_decode($this->getReport($params), true));
+
+        return [
+            'opened' => '',
+            'paid' => ''
+        ];
     }
 }

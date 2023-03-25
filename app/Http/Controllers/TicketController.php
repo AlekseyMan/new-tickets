@@ -20,6 +20,14 @@ class TicketController extends Controller
     public function getReport(Request $request, Ticket $ticket){
         return $ticket->getReport($request->all());
     }
+
+    public function showAdvanceReport(Request $request, Ticket $ticket){
+        $ticket->getAdvancedReport($request->all());
+        return view('pages.settings.report', [
+            'data' => $ticket->getAdvancedReport($request->all())
+        ]);
+    }
+
     public function create()
     {
         //

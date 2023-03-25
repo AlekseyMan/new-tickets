@@ -51,17 +51,22 @@
             <div class="text-center" id="school-statistics">
 
             </div>
+            <div id="report-button">
+
+            </div>
         </div>
     </div>
     <script>
         async function getReport(){
-            const coach = document.getElementById('coach')
-            const month = document.getElementById('month')
-            const year  = document.getElementById('year')
-            const token = document.getElementById('token').dataset.token
-            const block = document.getElementById('school-statistics')
-            block.innerHTML = ""
-            block.innerHTML = "<h3>Статистика по школам:</h3>"
+            const coach         = document.getElementById('coach')
+            const month         = document.getElementById('month')
+            const year          = document.getElementById('year')
+            const token         = document.getElementById('token').dataset.token
+            const block         = document.getElementById('school-statistics')
+            const reportBlock   = document.getElementById('report-button')
+            block.innerHTML         = ""
+            block.innerHTML         = "<h3>Статистика по школам:</h3>"
+            reportBlock.innerHTML   = ""
             let response = await fetch('/tickets/get-info', {
                 method: 'POST',
                 headers: new Headers({
@@ -78,12 +83,24 @@
             document.getElementById('tickets-open').innerText = res.opened
             document.getElementById('tickets-buyed').innerText = res.paid
             for(let name in res.schools){
-                let elem = document.createElement('div')
-                elem.innerHTML = "<b><p>"+ name +"</p></b>" +
-                    "<p>Открыто: "+ res.schools[name].opened +"</p>" +
-                    "<p>Куплено: "+ res.schools[name].paid +"</p>"
-                block.insertAdjacentElement("beforeend", elem)
+                if(res.schools[name].opened > 0 || res.schools[name].paid > 0) {
+                    let elem = document.createElement('div')
+                    elem.innerHTML = "<b><p>"+ name +"</p></b>" +
+                        "<p>Открыто: "+ res.schools[name].opened +"</p>" +
+                        "<p>Куплено: "+ res.schools[name].paid +"</p>"
+                    block.insertAdjacentElement("beforeend", elem)
+                }
             }
+            let formElement = document.createElement('form')
+            formElement.action = '/settings/reports'
+            formElement.method = 'POST'
+            formElement.className = "text-center"
+            formElement.innerHTML = '<input type="hidden" name="coach_id" value="' + coach.options[coach.selectedIndex].value + '">' +
+                '<input type="hidden" name="year" value="' + year.options[year.selectedIndex].value + '">' +
+                '<input type="hidden" name="month" value="' + month.options[year.selectedIndex].value + '">' +
+                '<input type="hidden" name="_token" value="' + token + '">' +
+                '<button class="btn btn-success">Подробнее</button>'
+            // reportBlock.insertAdjacentElement('beforeend', formElement)
         }
     </script>
 @endsection

@@ -59,7 +59,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     //Действия с пунктом настройки TODO (заменить на отчеты)
     Route::group(['prefix' => '/settings'], function () {
-        Route::get('/reports', [SettingController::class, 'showAdvanceReport']);
+        Route::post('/reports', [TicketController::class, 'showAdvanceReport']);
     });
 
     //Resource контроллеры: school, karateki, group, visit, settings
