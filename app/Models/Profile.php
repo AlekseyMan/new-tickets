@@ -81,7 +81,7 @@ class Profile extends Model
         };
         if($profile->hasRole('coach')){
             return $query->where('profile_role', self::ROLE_KARATEKA)
-                ->where('coach_id', $profile->id)
+//                ->where('coach_id', $profile->id)
                 ->search()
                 ->orderBy('surname')
                 ->orderBy('name');

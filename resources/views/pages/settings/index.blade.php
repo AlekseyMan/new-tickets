@@ -97,10 +97,10 @@
             formElement.className = "text-center"
             formElement.innerHTML = '<input type="hidden" name="coach_id" value="' + coach.options[coach.selectedIndex].value + '">' +
                 '<input type="hidden" name="year" value="' + year.options[year.selectedIndex].value + '">' +
-                '<input type="hidden" name="month" value="' + month.options[year.selectedIndex].value + '">' +
+                '<input type="hidden" name="month" value="' + month.options[month.selectedIndex].value + '">' +
                 '<input type="hidden" name="_token" value="' + token + '">' +
                 '<button class="btn btn-success">Подробнее</button>'
-            // reportBlock.insertAdjacentElement('beforeend', formElement)
+            reportBlock.insertAdjacentElement('beforeend', formElement)
         }
     </script>
 @endsection
