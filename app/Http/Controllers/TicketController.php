@@ -22,7 +22,6 @@ class TicketController extends Controller
     }
 
     public function showAdvanceReport(Request $request, Ticket $ticket){
-        $ticket->getAdvancedReport($request->all());
         return view('pages.settings.report', [
             'data' => $ticket->getAdvancedReport($request->all())
         ]);

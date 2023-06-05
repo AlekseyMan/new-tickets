@@ -110,13 +110,15 @@ class Ticket extends Model
         ]);
     }
 
-    public function getReport($params){
+    public function getReport($params, $shortReport = true){
         $userId         = Profile::find($params['coach_id'])->user_id;
         $startDate      = date("Y-m-d H:i:s", strtotime("{$params['year']}-{$params['month']}-1 00:00:01"));
         $lastDay        = date('t', strtotime($startDate));
         $endDate        = date("Y-m-d H:i:s", strtotime("{$params['year']}-{$params['month']}-{$lastDay} 23:59:59"));
         $schools        = School::all();
-        $result         = [];
+        $openedTickets  = [];
+        $schoolsResult  = [];
+        $payments       = [];
         $totalOpened    = 0;
         $totalPaid      = 0;
         foreach ($schools as $school){
@@ -129,31 +131,78 @@ class Ticket extends Model
             $opened = array_filter($opened->toArray(), function($elem) use ($school){
                 return in_array(json_decode($elem['data'],true)['oldValues'][1]['profile_id'], $school->karatekiIds);
             });
-            $paid       = Reports::whereIn('model_id', $school->karatekiIds)
+            $paid   = Reports::whereIn('model_id', $school->karatekiIds)
                 ->where('type', 'profile')
                 ->where('user_id', $userId)
                 ->where('created_at', '>', $startDate)
                 ->where('created_at', '<', $endDate)
                 ->whereJsonContains('data->action', "Оплата за абонемент")
-                ->count();
-            $result[$school->name]['opened'] = count($opened);
-            $result[$school->name]['paid']   = $paid;
-            $totalOpened = $totalOpened + count($opened);
-            $totalPaid   = $totalPaid + $paid;
+                ->get();
+            $shortReport ?: $openedTickets  = array_merge($openedTickets, $opened);
+            $shortReport ?: $payments       = array_merge($payments, $paid->toArray());
+            $schoolsResult[$school->name]['opened'] = count($opened);
+            $schoolsResult[$school->name]['paid']   = count($paid);
+            $totalOpened                            = $totalOpened + count($opened);
+            $totalPaid                              = $totalPaid + count($paid);
         }
+
         return json_encode([
-            'opened'  => $totalOpened,
-            'paid'    => $totalPaid,
-            'schools' => $result
+            'opened'        => $totalOpened,
+            'paid'          => $totalPaid,
+            'schools'       => $schoolsResult,
+            'reportsArray'  => $openedTickets,
+            'paidArray'     => $payments
         ]);
     }
 
     public function getAdvancedReport($params){
-        dd(json_decode($this->getReport($params), true));
-
+        $data                = json_decode($this->getReport($params, false), true);
+        $openedIdsArray      = $this->getIdsArray($data['reportsArray']);
+        $paymentsIdsArray    = $this->getIdsArray($data['paidArray']);
+        $profilesForOpened   = Profile::select('id', 'surname', 'name')->whereIn('id',$openedIdsArray)->orderBy('created_at')->get()->toArray();
+        $profilesForPayments = Profile::select('id', 'surname', 'name')->whereIn('id',$paymentsIdsArray)->orderBy('created_at')->get()->toArray();
         return [
-            'opened' => '',
-            'paid' => ''
-        ];
+                'opened'   => $this->getArrayForReport($data['reportsArray'], $profilesForOpened),
+                'payments' => $this->getArrayForReport($data['paidArray'], $profilesForPayments, 'payment')
+            ];
+    }
+
+    private function getArrayForReport($data, $profiles,$type = 'opened')
+    {
+        return array_map(function($value) use ($profiles, $type){
+            foreach ($profiles as $profile){
+                if($type === 'opened') {
+                    $tempData = json_decode($value['data']);
+                    if($profile['id'] === $tempData->oldValues[1]->profile_id){
+                        return [
+                            'name'      => $profile['surname'] . " " .  $profile['name'],
+                            'date'      => date("d-m-Y", strtotime($tempData->oldValues[6]->created_at)),
+                            'action'    => $tempData->action,
+
+                        ];
+                    }
+                } else {
+                    if($profile['id'] === $value['model_id']){
+                        return [
+                            'name'      => $profile['surname'] . " " .  $profile['name'],
+                            'date'      => date("d-m-Y", strtotime($value['created_at'])),
+                            'action'    => json_decode($value['data'])->action,
+                            'amount'    => json_decode($value['data'])->payment
+                        ];
+                    }
+                }
+            }
+        }, $data);
+
+    }
+    private function getIdsArray($data)
+    {
+        return array_map(function($value){
+            if(json_decode($value['data'])->action === 'Открыт новый абонемент'){
+                return json_decode($value['data'])->oldValues[1]->profile_id;
+            }
+            return $value['model_id'];
+        }, $data);
+
     }
 }
