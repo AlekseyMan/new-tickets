@@ -167,3 +167,20 @@ function teamEdit(id) {
         })
     })
 }
+
+
+async function groupOnPause(id, date){
+    const token = document.getElementById('token').dataset.token
+    let response = await fetch('/group/'+id+'/on_pause', {
+        method: 'POST',
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        }),
+        body: JSON.stringify({
+            date:   date,
+            _token: token
+        }),
+    });
+    let res = await response.json()
+    alert(res.message)
+}

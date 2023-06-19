@@ -56,4 +56,11 @@ class Group extends Model
     {
         return $value ?? School::find($this->school_id)->ticket_amount;
     }
+
+    public function allInGroupOnPauseFromDate($date)
+    {
+        foreach($this->karateki as $karateka){
+            $karateka->ticket->onPauseFromDate($date);
+        }
+    }
 }

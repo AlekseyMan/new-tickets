@@ -83,4 +83,10 @@ class GroupController extends Controller
         $group->karateki()->detach($request->profile_id);
         return back();
     }
+
+    public function groupOnPause(Request $request, Group $group)
+    {
+        $group->allInGroupOnPauseFromDate($request->date);
+        return response()->json(['message' => 'Все абонементы в группе поставлены на паузу']);
+    }
 }
