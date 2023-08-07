@@ -34,7 +34,8 @@ class GroupController extends Controller
         $availableVisitsNumber = Setting::whereName('visitsNumber')->first()->value;
         foreach ($group->karateki as $profile) {
             if(isset($profile->ticket)){
-                if(count($profile->ticket?->visitsWithoutMisses) >= $availableVisitsNumber OR $profile->ticket?->end_date < today()) {
+                if(count($profile->ticket?->visitsWithoutMisses) >= $availableVisitsNumber AND $profile->ticket?->paused !== false
+                    OR $profile->ticket?->end_date < today() AND $profile->ticket?->paused !== false) {
                     Ticket::find($profile->ticket->id)->update(['is_closed' => 1]);
                 };
             }
