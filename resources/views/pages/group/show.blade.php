@@ -12,11 +12,13 @@
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addKaratekaToGroup">
             Добавить спорстменов в группу
         </button>
-        <div class="ms-5 d-flex justify-content-between col-xl-7">
+        <div class="ms-5 d-flex justify-content-between col-xl-7 flex-wrap">
             <h4>{{$group->formatedSchedule}}</h4>
             <input type="date" class="form-control-sm" value="{{$_GET['for_date'] ?? date("Y-m-d")}}" id="visit-date">
             <input type="hidden" name="coach_id" value="{{$profile->coach_id ?? 1}}" id="coach_id">
             <h3>Тренер: {{$group->coach->surname}} {{$group->coach->name}} {{$group->coach->patronymic}}</h3>
+            <button type="button" class="btn btn-light ms-2" id="groupOnPause">Приостановить все</button>
+            <button type="button" class="btn btn-light ms-2" id="groupUnpause">Снять с паузы все абонементы</button>
         </div>
         <button type="button" class="btn btn-light ms-2" id="groupOnPause">Приостановить все</button>
     </div>
@@ -117,6 +119,14 @@
             let confirmation = confirm("Поставить все абонементы в группе на паузу c "+date+"?");
             if(confirmation){
                 groupOnPause(id, date)
+            }
+        })
+
+        document.getElementById('groupUnpause').addEventListener('click', ()=>{
+            let id   = {{$group->id}};
+            let confirmation = confirm("Снять с паузы все абонементы в группе?");
+            if(confirmation){
+                groupUnpause(id)
             }
         })
     </script>

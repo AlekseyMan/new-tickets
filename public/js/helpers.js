@@ -184,3 +184,18 @@ async function groupOnPause(id, date){
     let res = await response.json()
     alert(res.message)
 }
+
+async function groupUnpause(id){
+    const token = document.getElementById('token').dataset.token
+    let response = await fetch('/group/'+id+'/unpause', {
+        method: 'POST',
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        }),
+        body: JSON.stringify({
+            _token: token
+        }),
+    });
+    let res = await response.json()
+    alert(res.message)
+}

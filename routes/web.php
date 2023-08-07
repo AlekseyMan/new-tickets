@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/add-karateka-to-group', [GroupController::class, 'addKaratekaToGroup']);
         Route::post('/remove-from-group', [GroupController::class, 'removeFromGroup']);
         Route::post('/on_pause', [GroupController::class, 'groupOnPause']);
+        Route::post('/unpause', [GroupController::class, 'groupUnpause']);
     });
 
     //Действия с абонементамим

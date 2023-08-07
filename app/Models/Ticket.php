@@ -94,13 +94,15 @@ class Ticket extends Model
         $this->update($updateParams);
     }
 
-    public function onPauseFromDate($date)
+    public function onPauseFromDate($date, $userId)
     {
+        $updateParams = [
+            'paused'     => true,
+            'pause_date' => date('Y-m-d', strtotime($date))
+        ];
         if($this->is_closed == 0 and $this->paused == 0){
-            $this->update([
-                'paused'     => true,
-                'pause_date' => date('Y-m-d', strtotime($date))
-            ]);
+            $this->update($updateParams);
+            Report::ticketReport($userId, 'Абонемент поставлен на паузу', $this->id, $updateParams);
         }
     }
 
