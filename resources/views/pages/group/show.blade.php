@@ -20,7 +20,6 @@
             <button type="button" class="btn btn-light ms-2" id="groupOnPause">Приостановить все</button>
             <button type="button" class="btn btn-light ms-2" id="groupUnpause">Снять с паузы все абонементы</button>
         </div>
-        <button type="button" class="btn btn-light ms-2" id="groupOnPause">Приостановить все</button>
     </div>
     <div class="table-responsive">
         <table class="table table-vcenter" id="token" data-token="{{ csrf_token() }}">
