@@ -8,6 +8,7 @@ use App\Models\School;
 use App\Models\Setting;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
@@ -86,7 +87,13 @@ class GroupController extends Controller
 
     public function groupOnPause(Request $request, Group $group)
     {
-        $group->allInGroupOnPauseFromDate($request->date);
+        $group->allInGroupOnPauseFromDate($request->date, Auth::id());
         return response()->json(['message' => 'Все абонементы в группе поставлены на паузу']);
+    }
+
+    public function groupUnpause(Request $request, Group $group)
+    {
+        $group->allInGroupUnpauseFromDate(Auth::id());
+        return response()->json(['message' => 'Все абонементы в группе убраны с паузы']);
     }
 }

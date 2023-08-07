@@ -57,10 +57,17 @@ class Group extends Model
         return $value ?? School::find($this->school_id)->ticket_amount;
     }
 
-    public function allInGroupOnPauseFromDate($date)
+    public function allInGroupOnPauseFromDate($date, $userId)
     {
         foreach($this->karateki as $karateka){
-            $karateka->ticket->onPauseFromDate($date);
+            $karateka->ticket->onPauseFromDate($date, $userId);
+        }
+    }
+
+    public function allInGroupUnpauseFromDate($authId)
+    {
+        foreach($this->karateki as $karateka){
+            $karateka->ticket->resume($authId);
         }
     }
 }
