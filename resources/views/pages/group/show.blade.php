@@ -8,7 +8,7 @@
         \
         {{$group->name}}
     </div>
-    <div class="ms-5 d-flex justify-content-between col-12 flex-wrap">
+    <div class="m-3 d-flex justify-content-between col-9 flex-wrap">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addKaratekaToGroup">
             Добавить спорстменов в группу
         </button>
