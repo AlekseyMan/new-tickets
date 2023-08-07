@@ -47,6 +47,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => '/group/{group}'], function () {
         Route::post('/add-karateka-to-group', [GroupController::class, 'addKaratekaToGroup']);
         Route::post('/remove-from-group', [GroupController::class, 'removeFromGroup']);
+        Route::post('/on_pause', [GroupController::class, 'groupOnPause']);
     });
 
     //Действия с абонементамим

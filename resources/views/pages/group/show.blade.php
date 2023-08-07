@@ -18,6 +18,7 @@
             <input type="hidden" name="coach_id" value="{{$profile->coach_id ?? 1}}" id="coach_id">
             <h3>Тренер: {{$group->coach->surname}} {{$group->coach->name}} {{$group->coach->patronymic}}</h3>
         </div>
+        <button type="button" class="btn btn-light ms-2" id="groupOnPause">Приостановить все</button>
     </div>
     <div class="table-responsive">
         <table class="table table-vcenter" id="token" data-token="{{ csrf_token() }}">
@@ -109,6 +110,14 @@
     <script>
         document.getElementById('visit-date').addEventListener('change', (e)=>{
             location.search = "?for_date=" + e.target.value
+        })
+        document.getElementById('groupOnPause').addEventListener('click', ()=>{
+            let id   = {{$group->id}};
+            let date = document.getElementById('visit-date').value
+            let confirmation = confirm("Поставить все абонементы в группе на паузу c "+date+"?");
+            if(confirmation){
+                groupOnPause(id, date)
+            }
         })
     </script>
     <x-remove-from-group-modal groupId="{{$group->id}}"/>
