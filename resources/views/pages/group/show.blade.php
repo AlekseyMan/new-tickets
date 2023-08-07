@@ -1,27 +1,25 @@
 @extends('layouts.index')
 
 @section('content')
-    <div class="col-xl-8 text-start m-auto">
+    <div class="col-12 text-start m-auto">
         <a href="/school">Список школ</a>
         \
         <a href="/school/{{$school->id}}">{{$school->name}}</a>
         \
         {{$group->name}}
     </div>
-    <div class="d-flex justify-content-start m-3">
+    <div class="ms-5 d-flex justify-content-between col-12 flex-wrap">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addKaratekaToGroup">
             Добавить спорстменов в группу
         </button>
-        <div class="ms-5 d-flex justify-content-between col-xl-7 flex-wrap">
-            <h4>{{$group->formatedSchedule}}</h4>
-            <input type="date" class="form-control-sm" value="{{$_GET['for_date'] ?? date("Y-m-d")}}" id="visit-date">
-            <input type="hidden" name="coach_id" value="{{$profile->coach_id ?? 1}}" id="coach_id">
-            <h3>Тренер: {{$group->coach->surname}} {{$group->coach->name}} {{$group->coach->patronymic}}</h3>
-            <button type="button" class="btn btn-light ms-2" id="groupOnPause">Приостановить все</button>
-            <button type="button" class="btn btn-light ms-2" id="groupUnpause">Снять с паузы все абонементы</button>
-        </div>
+        <h4>{{$group->formatedSchedule}}</h4>
+        <input type="date" class="form-control-sm" value="{{$_GET['for_date'] ?? date("Y-m-d")}}" id="visit-date">
+        <input type="hidden" name="coach_id" value="{{$profile->coach_id ?? 1}}" id="coach_id">
+        <h3>Тренер: {{$group->coach->surname}} {{$group->coach->name}} {{$group->coach->patronymic}}</h3>
+        <button type="button" class="btn btn-light ms-2" id="groupOnPause">Приостановить все</button>
+        <button type="button" class="btn btn-light ms-2" id="groupUnpause">Снять с паузы все абонементы</button>
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive col-xl-9">
         <table class="table table-vcenter" id="token" data-token="{{ csrf_token() }}">
             <thead>
             <tr class="text-center">

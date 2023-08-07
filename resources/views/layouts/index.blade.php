@@ -15,16 +15,12 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css">
+    <meta name="viewport" content="width=device-width; initial-scale=1">
 </head>
 <body>
-<div class="container-xxl position-fixed fixed-top h3">
-
-</div>
 <x-top-menu />
-<div class="container-md">
-
+<div class="container">
     @yield('content')
-
 </div>
 </body>
 </html>
