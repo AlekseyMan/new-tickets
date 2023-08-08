@@ -74,9 +74,15 @@ class Ticket extends Model
 
     public function resume($userId)
     {
-        $unusedDays = strtotime($this->end_date) - strtotime($this->pause_date);
+
+        if($this->pause_date !== null){
+            $unusedDays = strtotime($this->end_date) - strtotime($this->pause_date);
+            $end_date = Carbon::parse(strtotime(today()))->addDays($unusedDays / (60 * 60 * 24) + 1)->format("Y-m-d");
+        }else {
+            $end_date = Carbon::parse(strtotime(today()))->addDay()->format("Y-m-d");
+        }
         $updateParams = [
-            'end_date'   => Carbon::parse(strtotime(today()) + $unusedDays)->addDay()->format("Y-m-d"),
+            'end_date'   => $end_date,
             'pause_date' => null,
             'paused'     => false
         ];
@@ -96,9 +102,10 @@ class Ticket extends Model
 
     public function onPauseFromDate($date, $userId)
     {
+        $date =  is_null($date) ? today() : date('Y-m-d', strtotime($date));
         $updateParams = [
             'paused'     => true,
-            'pause_date' => date('Y-m-d', strtotime($date))
+            'pause_date' => $date
         ];
         if($this->is_closed == 0 and $this->paused == 0){
             $this->update($updateParams);

@@ -67,7 +67,9 @@ class Group extends Model
     public function allInGroupUnpauseFromDate($authId)
     {
         foreach($this->karateki as $karateka){
-            $karateka->ticket->resume($authId);
+            if(!$karateka->ticket->is_closed AND $karateka->ticket->paused){
+                $karateka->ticket->resume($authId);
+            }
         }
     }
 }
