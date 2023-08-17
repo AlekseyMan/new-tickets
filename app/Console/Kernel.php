@@ -21,8 +21,8 @@ class Kernel extends ConsoleKernel
            $tickets = Ticket::all();
            $availableVisitsNumber = Setting::whereName('visitsNumber')->first()->value;
            foreach ($tickets as $ticket){
-               if(count($ticket?->visitsWithoutMisses) >= $availableVisitsNumber AND $ticket?->paused !== false
-                       OR $ticket?->end_date < today() AND $ticket?->paused !== false) {
+               if(count($ticket?->visitsWithoutMisses) >= $availableVisitsNumber AND $ticket?->paused !== true
+                       OR $ticket?->end_date < today() AND $ticket?->paused !== true) {
                    $ticket->update(['is_closed' => 1]);
                };
            }
