@@ -150,7 +150,7 @@ class Profile extends Model
 
     public function isBlockedBalance(): bool
     {
-        if ($this->updated_at < now()->addSeconds(-5)) {
+        if ($this->updated_at < now()->addSeconds(-15)) {
             return false;
         }
         return true;
