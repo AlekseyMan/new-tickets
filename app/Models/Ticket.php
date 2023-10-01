@@ -129,7 +129,8 @@ class Ticket extends Model
         ]);
     }
 
-    public function getReport($params, $shortReport = true){
+    public function getReport($params, $shortReport = true)
+    {
         $userId         = Profile::find($params['coach_id'])->user_id;
         $startDate      = date("Y-m-d H:i:s", strtotime("{$params['year']}-{$params['month']}-1 00:00:01"));
         $lastDay        = date('t', strtotime($startDate));
@@ -174,21 +175,31 @@ class Ticket extends Model
         ]);
     }
 
-    public function getAdvancedReport($params){
+    public function getAdvancedReport($params):array
+    {
         $data                = json_decode($this->getReport($params, false), true);
         $openedIdsArray      = $this->getIdsArray($data['reportsArray']);
         $paymentsIdsArray    = $this->getIdsArray($data['paidArray']);
-        $profilesForOpened   = Profile::select('id', 'surname', 'name')->whereIn('id',$openedIdsArray)->orderBy('created_at')->get()->toArray();
-        $profilesForPayments = Profile::select('id', 'surname', 'name')->whereIn('id',$paymentsIdsArray)->orderBy('created_at')->get()->toArray();
+        $profilesForOpened   = Profile::select('id', 'surname', 'name')
+            ->whereIn('id',$openedIdsArray)
+            ->orderBy('created_at')
+            ->get()
+            ->toArray();
+        $profilesForPayments = Profile::select('id', 'surname', 'name')
+            ->whereIn('id',$paymentsIdsArray)
+            ->orderBy('created_at')
+            ->get()
+            ->toArray();
         return [
                 'opened'   => $this->getArrayForReport($data['reportsArray'], $profilesForOpened),
                 'payments' => $this->getArrayForReport($data['paidArray'], $profilesForPayments, 'payment')
             ];
     }
 
-    private function getArrayForReport($data, $profiles,$type = 'opened')
+    private function getArrayForReport($data, $profiles, $type = 'opened'):array
     {
-        return array_map(function($value) use ($profiles, $type){
+        return array_map(function($value) use ($profiles, $type)
+        {
             foreach ($profiles as $profile){
                 if($type === 'opened') {
                     $tempData = json_decode($value['data']);
@@ -211,9 +222,10 @@ class Ticket extends Model
                     }
                 }
             }
+            return null;
         }, $data);
-
     }
+
     private function getIdsArray($data)
     {
         return array_map(function($value){
@@ -222,6 +234,5 @@ class Ticket extends Model
             }
             return $value['model_id'];
         }, $data);
-
     }
 }
