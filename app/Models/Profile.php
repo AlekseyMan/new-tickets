@@ -127,13 +127,20 @@ class Profile extends Model
     }
 
     //Methods
-    public function updateBalance(int $value, $reportType = 'balanceChange')
+
+    public function addPaymentForTicket(int $value, $reportType)
     {
         if(!$this->isBlockedBalance()){
-            $newBalance = (int)$this->balance + $value;
-            $this->update(['balance' => $newBalance]);
-            $reportType === 'balanceChange' ? Report::balanceReport(Auth::id(), $this, $value) : Report::paymentForTicketReport(Auth::id(), $this, $value);
+            $this->updateBalance($value, $reportType);
         }
+        return false;
+    }
+    
+    public function updateBalance(int $value, $reportType = 'balanceChange')
+    {
+        $newBalance = (int)$this->balance + $value;
+        $this->update(['balance' => $newBalance]);
+        $reportType === 'balanceChange' ? Report::balanceReport(Auth::id(), $this, $value) : Report::paymentForTicketReport(Auth::id(), $this, $value);
     }
 
     public function openNewTicket(int $value)
@@ -148,9 +155,9 @@ class Profile extends Model
         return false;
     }
 
-    public function isBlockedBalance(): bool
+    protected function isBlockedBalance(): bool
     {
-        if ($this->updated_at < now()->addSeconds(-15)) {
+        if ($this->updated_at < now()->addSeconds(-90)) {
             return false;
         }
         return true;

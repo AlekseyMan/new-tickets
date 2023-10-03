@@ -80,7 +80,7 @@ class ProfileController extends Controller
 
     public function addPaymentForTicket(Profile $profile, Group $group)
     {
-        $profile->updateBalance($group->ticket_amount, 'Оплата за абонемент');
+        $profile->addPaymentForTicket($group->ticket_amount, 'Оплата за абонемент');
         return back();
     }
 

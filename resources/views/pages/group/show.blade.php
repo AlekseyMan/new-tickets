@@ -80,7 +80,7 @@
                         id="userBalanceId={{$user->id}}">
                         <b id="userId={{$user->id}}">{{$user->balance ?? 0}}</b>
                         @if($user->balance < 0)
-                            <button type="button" class="btn btn-light ms-2">
+                            <button type="button" class="btn btn-light ms-2" data-type="balance">
                                 <a href="/balance/{{$user->id}}/addPaymentForTicket/{{$group->id}}"
                                    class="text-decoration-none text-black">
                                     Оплатить
@@ -124,6 +124,13 @@
             let confirmation = confirm("Снять с паузы все абонементы в группе?");
             if(confirmation){
                 groupUnpause(id)
+            }
+        })
+        Array.from(document.getElementsByTagName('button')).forEach((elem) => {
+            if(elem.dataset.type === 'balance'){
+                elem.addEventListener('click', (e) => {
+                    e.target.disabled = true
+                })
             }
         })
     </script>
