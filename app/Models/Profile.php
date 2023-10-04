@@ -130,17 +130,22 @@ class Profile extends Model
 
     public function addPaymentForTicket(int $value, $reportType)
     {
-        if(!$this->isBlockedBalance()){
-            $this->updateBalance($value, $reportType);
+        if($this->isBlockedBalance()){
+            return json_encode(['data' => 'error']);
         }
-        return false;
+        return $this->updateBalance($value, $reportType);
+
     }
-    
-    public function updateBalance(int $value, $reportType = 'balanceChange')
+
+    public function updateBalance(int $value, $reportType = 'balanceChange'): bool|string
     {
         $newBalance = (int)$this->balance + $value;
-        $this->update(['balance' => $newBalance]);
+        $result = $this->update(['balance' => $newBalance]);
         $reportType === 'balanceChange' ? Report::balanceReport(Auth::id(), $this, $value) : Report::paymentForTicketReport(Auth::id(), $this, $value);
+        return json_encode([
+            'data'    => $result,
+            'balance' => $newBalance
+        ]);
     }
 
     public function openNewTicket(int $value)
@@ -157,7 +162,11 @@ class Profile extends Model
 
     protected function isBlockedBalance(): bool
     {
-        if ($this->updated_at < now()->addSeconds(-90)) {
+        if(is_null(Reports::where([
+            'type'         => 'profile',
+            'model_id'     => $this->id,
+            'data->action' => "Оплата за абонемент"
+        ])->where('created_at', 'LIKE', date("Y-m-d") ."%")->first())){
             return false;
         }
         return true;

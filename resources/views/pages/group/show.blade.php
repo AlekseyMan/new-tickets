@@ -80,11 +80,9 @@
                         id="userBalanceId={{$user->id}}">
                         <b id="userId={{$user->id}}">{{$user->balance ?? 0}}</b>
                         @if($user->balance < 0)
-                            <button type="button" class="btn btn-light ms-2" data-type="balance">
-                                <a href="/balance/{{$user->id}}/addPaymentForTicket/{{$group->id}}"
-                                   class="text-decoration-none text-black">
+                            <button type="button" class="btn btn-light ms-2" data-type="balance"
+                                    data-user="{{$user->id}}" data-group="{{$group->id}}">
                                     Оплатить
-                                </a>
                             </button>
                         @endif
                     </td>
@@ -130,6 +128,21 @@
             if(elem.dataset.type === 'balance'){
                 elem.addEventListener('click', (e) => {
                     e.target.disabled = true
+                    let userId  = e.target.dataset.user
+                    let groupId = e.target.dataset.group
+                    addPaymentForTicket(userId,groupId).then((result)=> {
+                        if(result.data === true){
+                            let parent = e.target.parentElement
+                            parent.parentElement.className = "text-center"
+                            parent.innerHTML = ""
+                            let block = document.createElement('b')
+                            block.id = "userId=" + userId
+                            block.innerText = result.balance
+                            parent.insertAdjacentElement('afterbegin', block)
+                        } else {
+                            e.target.disabled = false
+                        }
+                    })
                 })
             }
         })

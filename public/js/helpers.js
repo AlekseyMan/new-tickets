@@ -168,6 +168,20 @@ function teamEdit(id) {
     })
 }
 
+async function addPaymentForTicket(userId, groupId){
+    const token = document.getElementById('token').dataset.token
+    let response = await fetch('/balance/'+ userId +'/addPaymentForTicket/' + groupId, {
+        method: 'POST',
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        }),
+        body: JSON.stringify({
+            _token: token
+        }),
+    });
+    return await response.json()
+}
+
 
 async function groupOnPause(id, date){
     const token = document.getElementById('token').dataset.token
